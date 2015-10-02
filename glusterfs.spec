@@ -135,7 +135,7 @@ links.
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
-%configure --disable-static
+%configure --disable-static --disable-bd-xlator
 # This section is not parallel safe or so due to bison/lex
 make -C libglusterfs/src
 make %{?_smp_mflags};
