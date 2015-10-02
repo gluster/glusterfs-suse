@@ -17,9 +17,9 @@
 
 
 Name:           glusterfs
-Version:        3.6.6
+Version:        3.5.6
 Release:        100
-%define rversion	3.6.6
+%define rversion	3.5.6
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
 Group:          System/Filesystems
@@ -27,7 +27,7 @@ Url:            http://gluster.org/
 
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
-Source:         http://download.gluster.org/pub/gluster/glusterfs/3.6/%version/%name-%version.tar.gz
+Source:         http://download.gluster.org/pub/gluster/glusterfs/3.5/%version/%name-%version.tar.gz
 #Patch1:         glusterfs-date.diff
 #Patch2:         multifrag.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -39,15 +39,8 @@ BuildRequires:  flex
 BuildRequires:  libaio-devel
 BuildRequires:  libtool
 BuildRequires:  pkgconfig
-BuildRequires:  python-devel
-BuildRequires:  python-ctypes
+BuildRequires:  python
 BuildRequires:  readline-devel
-BuildRequires:  lvm2-devel
-BuildRequires:  glib2-devel
-BuildRequires:  libattr-devel
-BuildRequires:  fuse-devel
-BuildRequires:  libibverbs-devel
-BuildRequires:  librdmacm-devel
 %if 0%{?sles_version} == 11
 BuildRequires:  fuse-devel >= 2.6.5
 BuildRequires:  libuuid-devel
@@ -289,7 +282,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 
 %changelog
 * Fri Oct 2 2015 kkeithle at redhat.com
-- 3.6.6 GA
+- GlusterFS 3.5.6 GA
 * Fri Feb 27 2015 jengelh@inai.de
 - CVE-2014-3619: add multifrag.diff [bnc#919879]
 * Mon Aug  4 2014 scorot@free.fr
