@@ -39,8 +39,15 @@ BuildRequires:  flex
 BuildRequires:  libaio-devel
 BuildRequires:  libtool
 BuildRequires:  pkgconfig
-BuildRequires:  python
+BuildRequires:  python-devel
+BuildRequires:  python-ctypes
 BuildRequires:  readline-devel
+BuildRequires:  lvm2-devel
+BuildRequires:  glib2-devel
+BuildRequires:  libattr-devel
+BuildRequires:  fuse-devel
+BuildRequires:  libibverbs-devel
+BuildRequires:  librdmacm-devel
 %if 0%{?sles_version} == 11
 BuildRequires:  fuse-devel >= 2.6.5
 BuildRequires:  libuuid-devel
@@ -135,7 +142,7 @@ links.
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
-%configure --disable-static --disable-bd-xlator
+%configure --disable-static
 # This section is not parallel safe or so due to bison/lex
 make -C libglusterfs/src
 make %{?_smp_mflags};
@@ -246,6 +253,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_docdir/%name
 %_localstatedir/lib/glusterd
 %_localstatedir/log/%name
+%python_sitelib/gluster*
 %if 0%{?_unitdir:1}
 %_unitdir/glusterd.service
 %else
@@ -281,7 +289,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 
 %changelog
 * Fri Oct 2 2015 kkeithle at redhat.com
-- GlusterFS 3.6.6 GA
+- 3.6.6 GA
 * Fri Feb 27 2015 jengelh@inai.de
 - CVE-2014-3619: add multifrag.diff [bnc#919879]
 * Mon Aug  4 2014 scorot@free.fr
