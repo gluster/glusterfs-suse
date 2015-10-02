@@ -1,0 +1,36 @@
+diff --git a/xlators/features/changelog/src/changelog-helpers.c b/xlators/features/changelog/src/changelog-helpers.c
+index 144bf54..6751472 100644
+--- a/xlators/features/changelog/src/changelog-helpers.c
++++ b/xlators/features/changelog/src/changelog-helpers.c
+@@ -1882,7 +1882,7 @@ resolve_pargfid_to_path (xlator_t *this, uuid_t pargfid,
+ 
+         dir_handle = alloca (PATH_MAX);
+         linkname   = alloca (PATH_MAX);
+-        (void) snprintf (gpath, PATH_MAX, "%s/.glusterfs/",
++        (void) snprintf (gpath, sizeof gpath, "%s/.glusterfs/",
+                          priv->changelog_brick);
+ 
+         while (!(__is_root_gfid (pargfid))) {
+@@ -1904,17 +1904,17 @@ resolve_pargfid_to_path (xlator_t *this, uuid_t pargfid,
+                                      &saveptr);
+                 dir_name = strtok_r (NULL, "/", &saveptr);
+ 
+-                strncpy (result, dir_name, PATH_MAX);
+-                strncat (result, "/", 1);
+-                strncat (result, pre_dir_name, PATH_MAX);
+-                strncpy (pre_dir_name, result, PATH_MAX);
++                strncpy (result, dir_name, sizeof result);
++                strncat (result, "/", sizeof result - 1);
++                strncat (result, pre_dir_name, sizeof result - strlen (result) - 1);
++                strncpy (pre_dir_name, result, sizeof pre_dir_name);
+ 
+                 gf_uuid_parse (pgfidstr, tmp_gfid);
+                 gf_uuid_copy (pargfid, tmp_gfid);
+         }
+ 
+         if (bname)
+-                strncat (result, bname, PATH_MAX);
++                strncat (result, bname, sizeof result - strlen (result) - 1);
+ 
+         *path = gf_strdup (result);
+ 
