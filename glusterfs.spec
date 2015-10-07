@@ -17,9 +17,9 @@
 
 
 Name:           glusterfs
-Version:        3.7.4
+Version:        3.7.5
 Release:        100
-%define rversion	3.7.4
+%define rversion	3.7.5
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
 Group:          System/Filesystems
@@ -299,6 +299,9 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Wed Oct 7 2015 kkeithle at redhat.com
+- GlusterFS 3.7.5 GA
+- CVE-2014-3619: add multifrag.diff [bnc#919879]
 * Fri Feb 27 2015 jengelh@inai.de
 - CVE-2014-3619: add multifrag.diff [bnc#919879]
 * Mon Aug  4 2014 scorot@free.fr
