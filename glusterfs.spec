@@ -17,9 +17,9 @@
 
 
 Name:           glusterfs
-Version:        3.7.4
+Version:        3.7.6
 Release:        100
-%define rversion	3.7.4
+%define rversion	3.7.6
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
 Group:          System/Filesystems
@@ -27,8 +27,7 @@ Url:            http://gluster.org/
 
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
-Source:         http://download.gluster.org/pub/gluster/glusterfs/3.5/%version/%name-%version.tar.gz
-Patch1:         g374.patch
+Source:         http://download.gluster.org/pub/gluster/glusterfs/3.7/%version/%name-%version.tar.gz
 #Patch2:         multifrag.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
@@ -139,7 +138,6 @@ links.
 
 %prep
 %setup -q
-%patch1 -p1
 #%%patch -P 1 -P 2 -p1
 
 %build
@@ -299,6 +297,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Mon Nov 29 2015 kkeithle at redhat.com
+- GlusterFS 3.7.6 GA
 * Fri Feb 27 2015 jengelh@inai.de
 - CVE-2014-3619: add multifrag.diff [bnc#919879]
 * Mon Aug  4 2014 scorot@free.fr
