@@ -28,8 +28,6 @@ Url:            http://gluster.org/
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/3.7/%version/%name-%version.tar.gz
-Patch1:         g374.patch
-#Patch2:         multifrag.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -139,8 +137,6 @@ links.
 
 %prep
 %setup -q
-%patch1 -p1
-#%%patch -P 1 -P 2 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
