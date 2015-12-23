@@ -128,6 +128,8 @@ Requires:       libgfchangelog0 = %version
 Requires:       libgfrpc0 = %version
 Requires:       libgfxdr0 = %version
 Requires:       libglusterfs0 = %version
+Requires:       libuuid-devel
+Requires:       libacl-devel
 
 %description devel
 GlusterFS is a clustered file-system capable of scaling to several
