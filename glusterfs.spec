@@ -17,9 +17,9 @@
 
 
 Name:           glusterfs
-Version:        3.6.7
+Version:        3.6.8
 Release:        100
-%define rversion	3.6.7
+%define rversion	3.6.8
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
 Group:          System/Filesystems
@@ -280,6 +280,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Fri Jan 8 2016 kkeithle at redhat.com
+- GlusterFS 3.6.8 GA
 * Fri Dec 4 2015 kkeithle at redhat.com
 - GlusterFS 3.6.7 GA
 * Fri Oct 2 2015 kkeithle at redhat.com
