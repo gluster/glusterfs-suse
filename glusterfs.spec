@@ -17,9 +17,9 @@
 
 
 Name:           glusterfs
-Version:        3.7.6
+Version:        3.7.8
 Release:        100
-%define rversion	3.7.6
+%define rversion	3.7.8
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
 Group:          System/Filesystems
