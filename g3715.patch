@@ -1,0 +1,29 @@
+--- glusterfs-3.7.15/xlators/mgmt/glusterd/src/glusterd-geo-rep.c.orig	2016-08-31 11:01:19.068059449 -0400
++++ glusterfs-3.7.15/xlators/mgmt/glusterd/src/glusterd-geo-rep.c	2016-08-31 11:03:21.990506781 -0400
+@@ -3003,8 +3003,7 @@
+         struct slave_vol_config  slave1                     = {{0},};
+         int                      type                       = 0;
+         char                     monitor_status[NAME_MAX]   = {0,};
+-        char                     old_slave_url_info[SLAVE_URL_INFO_MAX] = {0};
+-        char                     *old_slave_url             = NULL;
++        char                     old_slave_url[SLAVE_URL_INFO_MAX] = {0};
+         char                     old_confpath[PATH_MAX]     = {0};
+         gf_boolean_t             is_running                 = _gf_false;
+         int                      ret_status                 = 0;
+@@ -3304,14 +3303,8 @@
+                                         "%s/"GEOREP"/%s_%s_%s/gsyncd.conf",
+                                         conf->workdir, volinfo->volname,
+                                         slave1.old_slvhost, slave_vol);
+-
+-                        /* construct old slave url with (old) slave host */
+-                        old_slave_url = old_slave_url_info;
+-                        strncpy (old_slave_url, slave1.old_slvhost,
+-                                                sizeof(old_slave_url_info));
+-                        old_slave_url = strcat (old_slave_url, "::");
+-                        old_slave_url = strncat (old_slave_url, slave_vol,
+-                                                 sizeof(old_slave_url_info));
++                        snprintf (old_slave_url, sizeof(old_slave_url),
++                                  "%s::%s", slave1.old_slvhost, slave_vol);
+ 
+                         ret = glusterd_check_gsync_running_local (
+                                                               volinfo->volname,
