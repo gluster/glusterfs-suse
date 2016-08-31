@@ -17,7 +17,7 @@
 
 
 Name:           glusterfs
-Version:        3.7.14
+Version:        3.7.15
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -27,7 +27,7 @@ Url:            http://gluster.org/
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/3.7/%version/%name-%version.tar.gz
-Patch0:         g3713.patch
+Patch0:         g3715.patch
 #Patch2:         multifrag.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
@@ -299,6 +299,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Wed Aug 31 2016 kkeithle at redhat.com
+- GlusterFS 3.7.15 GA
 * Mon Aug 1 2016 kkeithle at redhat.com
 - GlusterFS 3.7.14 GA
 * Mon Jul 11 2016 kkeithle at redhat.com
