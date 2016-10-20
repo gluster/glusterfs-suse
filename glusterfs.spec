@@ -17,7 +17,7 @@
 
 
 Name:           glusterfs
-Version:        3.8.3
+Version:        3.8.5
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -247,7 +247,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 /sbin/mount.%name
 %_libexecdir/%name/
 %_libdir/%name/
-%_libdir/libgfdb.*
+%_libdir/libgfdb.so.*
+%exclude %_libdir/libgfdb.so
 %dir %{_exec_prefix}/lib/ganesha
 %{_exec_prefix}/lib/ganesha/*
 %_sbindir/gluster*
@@ -296,6 +297,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Thu Oct 20 2016 kkeithle at redhat.com
+- GlusterFS 3.8.5 GA
 * Mon Aug 22 2016 kkeithle at redhat.com
 - GlusterFS 3.8.3 GA
 * Wed Aug 10 2016 kkeithle at redhat.com
