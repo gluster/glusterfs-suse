@@ -17,7 +17,7 @@
 
 
 Name:           glusterfs
-Version:        3.8.5
+Version:        3.9.0
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -27,6 +27,7 @@ Url:            http://gluster.org/
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/3.8/%version/%name-%version.tar.gz
+Patch0:         glusterfs-3.9.0rc2.api.glfs_free.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -117,6 +118,16 @@ Group:          System/Libraries
 GlusterFS is a clustered file-system capable of scaling to several
 petabytes.
 
+%package ganesha
+Summary:        GlusterFS's NFS-Ganesha Support
+Group:          System/Libraries
+Requires:       resource-agents
+
+%description -n glusterfs-ganesha
+GlusterFS is a clustered file-system capable of scaling to several
+petabytes.
+
+
 %package devel
 Summary:        Development files for glusterfs
 Group:          Development/Libraries/C and C++
@@ -138,6 +149,7 @@ links.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
@@ -237,11 +249,11 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %dir %_sysconfdir/%name
 %config(noreplace) %_sysconfdir/%name/glusterd.vol
 %config(noreplace) %_sysconfdir/%name/glusterfs-logrotate
-%dir %_sysconfdir/ganesha
-%config %_sysconfdir/ganesha/*
+%exclude %_sysconfdir/ganesha/*
 %config %_sysconfdir/%name/gluster-rsyslog*.conf
 %config %_sysconfdir/%name/*.example
 %config %_sysconfdir/%name/*-logrotate
+%config %_sysconfdir/%name/eventsconfig.json
 %_bindir/glusterfind
 %_bindir/fusermount-glusterfs
 /sbin/mount.%name
@@ -249,14 +261,14 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/%name/
 %_libdir/libgfdb.so.*
 %exclude %_libdir/libgfdb.so
-%dir %{_exec_prefix}/lib/ganesha
-%{_exec_prefix}/lib/ganesha/*
+%exclude %{_exec_prefix}/lib/ganesha/*
 %_sbindir/gluster*
 %_sbindir/glfsheal
 %_sbindir/rcglusterd
 %_sbindir/gcron.py
 %_sbindir/gfind_missing_files
 %_sbindir/snap_scheduler.py
+%_sbindir/conf.py
 %_datadir/glusterfs/
 %_mandir/man*/*
 %_docdir/%name
@@ -265,6 +277,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %python_sitelib/gluster*
 %if 0%{?_unitdir:1}
 %_unitdir/glusterd.service
+%_unitdir/glustereventsd.service
 %else
 %_initddir/glusterd*
 %endif
@@ -290,6 +303,13 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %defattr(-,root,root)
 %_libdir/libglusterfs.so.0*
 
+%files ganesha
+%_libexecdir/ganesha/
+%dir %_sysconfdir/ganesha
+%config %_sysconfdir/ganesha/*
+%dir %{_exec_prefix}/lib/ganesha
+%{_exec_prefix}/lib/ganesha/*
+
 %files devel
 %defattr(-,root,root)
 %_includedir/%name
@@ -297,6 +317,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Wed Nov 16 2016 kkeithle at redhat.com
+- GlusterFS 3.9.0 GA
 * Thu Oct 20 2016 kkeithle at redhat.com
 - GlusterFS 3.8.5 GA
 * Mon Aug 22 2016 kkeithle at redhat.com
