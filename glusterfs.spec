@@ -298,7 +298,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
-* Mon Jan 9 2016 kkeithle at redhat.com
+* Mon Jan 9 2017 kkeithle at redhat.com
 - GlusterFS 3.7.19 GA
 * Wed Dec 14 2016 kkeithle at redhat.com
 - GlusterFS 3.7.18 GA
