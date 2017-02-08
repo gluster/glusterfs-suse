@@ -17,8 +17,9 @@
 
 
 Name:           glusterfs
-Version:        3.9.1
-Release:        100
+%global prereltag rc0
+Version:        3.10.0%{?prereltag}
+Release:        1
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
 Group:          System/Filesystems
@@ -26,7 +27,8 @@ Url:            http://gluster.org/
 
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
-Source:         http://download.gluster.org/pub/gluster/glusterfs/3.8/%version/%name-%version.tar.gz
+Source:         http://download.gluster.org/pub/gluster/glusterfs/3.10/%version/%name-%version.tar.gz
+Patch0:         glusterfs-3.10.0rc0.xlators.mgmt.glusterd.glusterd-op-sm.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -147,7 +149,8 @@ This package provides development files such as headers and library
 links.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}
+%patch0 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
@@ -261,6 +264,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %exclude %_libdir/libgfdb.so
 %exclude %{_exec_prefix}/lib/ganesha/*
 %_sbindir/gluster*
+%_sbindir/gf_attach
 %_sbindir/glfsheal
 %_sbindir/rcglusterd
 %_sbindir/gcron.py
@@ -315,6 +319,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Wed Feb 8 2017 kkeithle at redhat.com
+- GlusterFS 3.10.0 RC0
 * Wed Jan 18 2017 kkeithle at redhat.com
 - GlusterFS 3.9.1 GA
 * Wed Nov 16 2016 kkeithle at redhat.com
