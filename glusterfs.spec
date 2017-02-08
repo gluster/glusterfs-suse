@@ -17,7 +17,7 @@
 
 
 Name:           glusterfs
-Version:        3.9.0
+Version:        3.9.1
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -27,7 +27,6 @@ Url:            http://gluster.org/
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/3.8/%version/%name-%version.tar.gz
-Patch0:         glusterfs-3.9.0rc2.api.glfs_free.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -149,7 +148,6 @@ links.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
@@ -317,6 +315,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Wed Jan 18 2017 kkeithle at redhat.com
+- GlusterFS 3.9.1 GA
 * Wed Nov 16 2016 kkeithle at redhat.com
 - GlusterFS 3.9.0 GA
 * Thu Oct 20 2016 kkeithle at redhat.com
