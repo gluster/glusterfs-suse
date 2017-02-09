@@ -1,19 +1,21 @@
+%global commit0 c155815073667968aade0880abaecf709c5416fc
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Summary:          Core Utilities for the Gluster Distributed File System
 Name:             glusterfs-coreutils
 Version:          0.2.0
 Release:          1%{?dist}
-License:          GPLv3
+License:          GPL-3.0
 Group:            System Environment/Base
 URL:              https://github.com/gluster/glusterfs-coreutils
-Source0:          https://github.com/gluster/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
-
+# Source0:          https://github.com/gluster/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
+Source0:          %{name}-%{shortcommit0}.tar.gz
 
 Provides:         bundled(gnulib)
 
-Requires:         glusterfs-api >= 3.8.6
+Requires:         glusterfs >= 3.8.6
 
-BuildRequires:    glusterfs-api-devel >= 3.8.6
+BuildRequires:    glusterfs-devel >= 3.8.6
 BuildRequires:    help2man >= 1.36
 BuildRequires:    readline-devel
 
@@ -22,10 +24,10 @@ gluster-coreutils provides a set of basic utilities such as cat, mkdir, ls,
 stat, rm and tail that are implemented specifically using the GlusterFS API.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{shortcommit0}
 
 %build
-%configure
+./autogen.sh && %configure
 make %{?_smp_mflags}
 
 %install
