@@ -32,11 +32,14 @@ make %{?_smp_mflags}
 
 %install
 %make_install
+mkdir -p %{buildroot}%{_defaultlicensedir}/%{name}
+install -c -m 0644 COPYING %{buildroot}%{_defaultlicensedir}/%{name}/
 
 %files
-%license COPYING
 %{_bindir}/*
 %{_mandir}/man1/*
+%dir %{_defaultlicensedir}
+%{_defaultlicensedir}/*
 
 %changelog
 * Wed Jul 27 2016 Anoop C S <anoopcs@redhat.com> - 0.2.0-1
