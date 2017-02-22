@@ -17,7 +17,7 @@
 
 
 Name:           glusterfs
-%global prereltag rc0
+%global prereltag rc1
 Version:        3.10.0%{?prereltag}
 Release:        1
 Summary:        Aggregating distributed file system
@@ -28,7 +28,6 @@ Url:            http://gluster.org/
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/3.10/%version/%name-%version.tar.gz
-Patch0:         glusterfs-3.10.0rc0.xlators.mgmt.glusterd.glusterd-op-sm.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -150,7 +149,6 @@ links.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
@@ -251,7 +249,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %config(noreplace) %_sysconfdir/%name/glusterd.vol
 %config(noreplace) %_sysconfdir/%name/glusterfs-logrotate
 %exclude %_sysconfdir/ganesha/*
-%config %_sysconfdir/%name/gluster-rsyslog*.conf
+%config %_sysconfdir/%name/*
 %config %_sysconfdir/%name/*.example
 %config %_sysconfdir/%name/*-logrotate
 %config %_sysconfdir/%name/eventsconfig.json
@@ -319,6 +317,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Wed Feb 22 2017 kkeithle at redhat.com
+- GlusterFS 3.10.0 RC1
 * Wed Feb 8 2017 kkeithle at redhat.com
 - GlusterFS 3.10.0 RC0
 * Wed Jan 18 2017 kkeithle at redhat.com
