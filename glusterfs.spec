@@ -17,9 +17,9 @@
 
 
 Name:           glusterfs
-%global prereltag rc1
+# %%global prereltag rc1
 Version:        3.10.0%{?prereltag}
-Release:        1
+Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
 Group:          System/Filesystems
@@ -28,7 +28,6 @@ Url:            http://gluster.org/
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/3.10/%version/%name-%version.tar.gz
-Patch0:         glusterfs-3.10.0rc1.api.glfs.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -150,7 +149,6 @@ links.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
@@ -319,6 +317,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Fri Feb 24 2017 kkeithle at redhat.com
+- GlusterFS 3.10.0 GA
 * Wed Feb 22 2017 kkeithle at redhat.com
 - GlusterFS 3.10.0 RC1
 * Wed Feb 8 2017 kkeithle at redhat.com
