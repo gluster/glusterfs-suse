@@ -17,7 +17,7 @@
 
 
 Name:           glusterfs
-Version:        3.8.10
+Version:        3.8.11
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -297,6 +297,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Mon Apr 17 2017 kkeithle at redhat.com
+- GlusterFS 3.8.11 GA
 * Mon Mar 13 2017 kkeithle at redhat.com
 - GlusterFS 3.8.10 GA
 * Tue Feb 21 2017 kkeithle at redhat.com
