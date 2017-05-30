@@ -18,7 +18,7 @@
 
 Name:           glusterfs
 # %%global prereltag rc1
-Version:        3.10.2%{?prereltag}
+Version:        3.11.0%{?prereltag}
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -28,7 +28,6 @@ Url:            http://gluster.org/
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/3.10/%version/%name-%version.tar.gz
-Patch0:         glusterfs-3.10.2.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -119,15 +118,6 @@ Group:          System/Libraries
 GlusterFS is a clustered file-system capable of scaling to several
 petabytes.
 
-%package ganesha
-Summary:        GlusterFS's NFS-Ganesha Support
-Group:          System/Libraries
-Requires:       resource-agents
-
-%description -n glusterfs-ganesha
-GlusterFS is a clustered file-system capable of scaling to several
-petabytes.
-
 
 %package devel
 Summary:        Development files for glusterfs
@@ -150,11 +140,10 @@ links.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
-%configure --disable-static
+%configure --disable-static --enable-gnfs
 # This section is not parallel safe or so due to bison/lex
 make %{?_smp_mflags};
 
@@ -249,7 +238,6 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %dir %_sysconfdir/%name
 %config(noreplace) %_sysconfdir/%name/glusterd.vol
 %config(noreplace) %_sysconfdir/%name/glusterfs-logrotate
-%exclude %_sysconfdir/ganesha/*
 %config %_sysconfdir/%name/*
 %config %_sysconfdir/%name/*.example
 %config %_sysconfdir/%name/*-logrotate
@@ -261,7 +249,6 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/%name/
 %_libdir/libgfdb.so.*
 %exclude %_libdir/libgfdb.so
-%exclude %{_exec_prefix}/lib/ganesha/*
 %_sbindir/gluster*
 %_sbindir/gf_attach
 %_sbindir/glfsheal
@@ -304,13 +291,6 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %defattr(-,root,root)
 %_libdir/libglusterfs.so.0*
 
-%files ganesha
-%_libexecdir/ganesha/
-%dir %_sysconfdir/ganesha
-%config %_sysconfdir/ganesha/*
-%dir %{_exec_prefix}/lib/ganesha
-%{_exec_prefix}/lib/ganesha/*
-
 %files devel
 %defattr(-,root,root)
 %_includedir/%name
@@ -318,6 +298,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Tue May 30 2017 kkeithle at redhat.com
+- GlusterFS 3.11.0 GA
 * Mon May 15 2017 kkeithle at redhat.com
 - GlusterFS 3.10.2 GA
 * Fri Mar 31 2017 kkeithle at redhat.com
