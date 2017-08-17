@@ -246,6 +246,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_docdir/%name
 %_localstatedir/lib/glusterd
 %_localstatedir/log/%name
+%python_sitelib/gluster*
 %if 0%{?_unitdir:1}
 %_unitdir/glusterd.service
 %else
