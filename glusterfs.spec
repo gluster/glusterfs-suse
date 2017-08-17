@@ -204,7 +204,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %if 0%{?suse_version} >= 1210
 %service_add_post glusterd.service
 %else
-%fillup_and_insserv -f glusterd
+%fillup_and_insserv -f -y glusterd
 %endif
 
 %preun
