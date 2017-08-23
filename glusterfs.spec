@@ -19,7 +19,7 @@
 Name:           glusterfs
 # %%global prereltag rc1
 Version:        3.10.5%{?prereltag}
-Release:        100
+Release:        101
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
 Group:          System/Filesystems
@@ -45,8 +45,7 @@ BuildRequires:  sqlite3-devel
 BuildRequires:  glib2-devel
 BuildRequires:  libattr-devel
 BuildRequires:  libacl-devel
-BuildRequires:  libibverbs-devel
-BuildRequires:  librdmacm-devel >= 1.0.15
+BuildRequires:  rdma-core-devel
 %if 0%{?sles_version} == 11
 BuildRequires:  fuse-devel >= 2.6.5
 BuildRequires:  libuuid-devel
@@ -316,6 +315,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Wed Aug 23 2017 kkeithle at redhat.com
+- GlusterFS 3.10.5, libibverbs, librdmacm -> rdma-core
 * Sun Aug 13 2017 kkeithle at redhat.com
 - GlusterFS 3.10.5 GA
 * Thu Jul 6 2017 kkeithle at redhat.com
