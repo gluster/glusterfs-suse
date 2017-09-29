@@ -69,7 +69,7 @@ diff --git a/configure.ac b/configure.ac
 index 77152b5..56767a6 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -9,7 +9,7 @@ dnl  cases as published by the Free Software Foundation.
+@@ -9,7 +9,7 @@
  
  AC_PREREQ([2.69])
  AC_INIT([gluster-block],
@@ -78,6 +78,13 @@ index 77152b5..56767a6 100644
          [pkalever@redhat.com],,
          [https://github.com/gluster/gluster-block.git])
  
+@@ -46,6 +46,7 @@
+ 
+ # Checks for programs.
+ AC_PROG_CC
++AM_PROG_CC_C_O
+ 
+ AC_CHECK_PROG(RPCGEN, rpcgen, yes, no)
+ if test "x$RPCGEN" = "xno"; then
 -- 
 2.9.3
-
