@@ -33,7 +33,7 @@ storage creation and maintenance as simple as possible.
 echo %{version} > VERSION
 ./autogen.sh
 %configure
-%make_build
+make
 
 %install
 %make_install
