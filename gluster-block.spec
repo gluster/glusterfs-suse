@@ -2,7 +2,7 @@ Summary:          Gluster block storage utility
 Name:             gluster-block
 Version:          0.2.1
 Release:          2%{?dist}
-License:          GPLv2 or LGPLv3+
+License:          GPL-2.0 or LGPL-3.0+
 URL:              https://github.com/gluster/gluster-block
 Source0:          https://github.com/gluster/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
@@ -37,24 +37,36 @@ make
 
 %install
 %make_install
+%if 0%{?_unitdir:1}
+mkdir -p "%buildroot/%_unitdir"
+rm -Rf "%buildroot/%_initddir"
+ln -s service "%buildroot/%_sbindir/rcgluster-blockd"
+%else
+ln -s "%_initddir/gluster-blockd" "%buildroot/%_sbindir/rcgluster-blockd"
+%endif
+
+%pre
+%service_add_pre gluster-blockd.service
 
 %post
-%systemd_post gluster-blockd.service
+%service_add_post gluster-blockd.service
 
 %preun
-%systemd_preun gluster-blockd.service
+%service_del_preun gluster-blockd.service
 
 %postun
-%systemd_postun_with_restart gluster-blockd.service
+%service_del_postun gluster-blockd.service
 
 %files
+%defattr(-,root,root)
 %license COPYING-GPLV2 COPYING-LGPLV3
 %doc README.md
 %{_sbindir}/gluster-block
 %{_sbindir}/gluster-blockd
+%{_sbindir}/rcgluster-blockd
 %{_mandir}/man8/gluster-block*.8*
 %{_unitdir}/gluster-blockd.service
-%config(noreplace) %{_sysconfdir}/sysconfig/gluster-blockd
+%exclude %{_sysconfdir}/sysconfig/gluster-blockd
 
 %changelog
 * Wed Sep 13 2017 Niels de Vos <ndevos@redhat.com> - 0.2.1-2
