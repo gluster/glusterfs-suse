@@ -18,8 +18,8 @@
 
 Name:           glusterfs
 # %%global prereltag rc1
-Version:        3.12.1%{?prereltag}
-Release:        101
+Version:        3.12.2%{?prereltag}
+Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
 Group:          System/Filesystems
@@ -28,7 +28,6 @@ Url:            http://gluster.org/
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/3.10/%version/%name-%version.tar.gz
-Patch0:         0001-cli_src_cli-cmd-parser.c.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -140,7 +139,6 @@ links.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
@@ -215,6 +213,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %preun
 %if 0%{?suse_version} >= 1210
 %service_del_preun glusterd.service
+%service_del_preun glustereventsd.service
+%service_del_preun glusterfssharedstorage.service
 %else
 %stop_on_removal glusterd
 %endif
@@ -222,6 +222,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %postun
 %if 0%{?suse_version} >= 1210
 %service_del_postun glusterd.service
+%service_del_postun glustereventsd.service
+%service_del_postun glusterfssharedstorage.service
 %else
 %insserv_cleanup
 %restart_on_update glusterd
@@ -304,8 +306,10 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Fri Oct 13 2017 kkeithle at redhat.com
+- GlusterFS 3.12.2 GA
 * Fri Sep 29 2017 kkeithle at redhat.com
-- GlusterFS 3.12.1 w BZ 1495858
+- GlusterFS 3.12.1 w/ BZ 1495858
 * Mon Sep 11 2017 kkeithle at redhat.com
 - GlusterFS 3.12.1 GA
 * Wed Aug 30 2017 kkeithle at redhat.com
