@@ -41,9 +41,6 @@ See http://gdeploy.readthedocs.io/en/latest/ for more details
 
 %build
 python2 setup.py build
-pushd docs
-make html
-popd
 
 %install
 # Install the binary and python libraries
@@ -74,14 +71,6 @@ install -p -m 644 plugins/callback/gdeploy.py \
         %{buildroot}/%{python_sitelib}/ansible/plugins/callback/
 
 # Documentation
-mkdir -p %{buildroot}/%{_pkgdocdir}
-cp -rp docs/build/html examples %{buildroot}/%{_pkgdocdir}
-
-# Man pages
-mkdir -p %{buildroot}/%{_mandir}/man1/ \
-       %{buildroot}/%{_mandir}/man5/
-cp -p man/gdeploy.1* %{buildroot}/%{_mandir}/man1/
-cp -p man/gdeploy.conf* %{buildroot}/%{_mandir}/man5/
 
 %files
 %{_bindir}/gdeploy
@@ -93,12 +82,9 @@ cp -p man/gdeploy.conf* %{buildroot}/%{_mandir}/man5/
 
 %doc README.md TODO
 %license LICENSE
-%{_mandir}/man1/gdeploy*
-%{_mandir}/man5/gdeploy*
 
 %package doc
 Summary: gdeploy documentation
-BuildRequires:  python-sphinx
 
 %description doc
 gdeploy is an Ansible based deployment tool, used to deploy and configure
@@ -108,7 +94,7 @@ gdeploy-doc package provides the documentation for writing gdeploy
 configuration files to deploy and configure GlusterFS.
 
 %files doc
-%doc %{_pkgdocdir}
+#%%doc %{_pkgdocdir}
 
 %changelog
 * Wed Aug 16 2017 Sachidananda Urs <sac@redhat.com> 2.0.2-14
