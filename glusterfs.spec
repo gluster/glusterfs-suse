@@ -19,7 +19,7 @@
 Name:           glusterfs
 # %%global prereltag rc1
 Version:        3.12.3%{?prereltag}
-Release:        100
+Release:        102
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
 Group:          System/Filesystems
@@ -28,6 +28,7 @@ Url:            http://gluster.org/
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/3.10/%version/%name-%version.tar.gz
+Patch0001:      0001-Revert-eventsapi-Add-JWT-signing-support.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -62,7 +63,6 @@ BuildRequires:  systemd
 %endif
 Requires:       python
 Requires:       python-requests
-Requires:       python-jwt
 
 %description
 GlusterFS is a clustered file-system capable of scaling to several
@@ -141,6 +141,7 @@ links.
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch0001 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
@@ -309,7 +310,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 
 %changelog
 * Fri Dec 1 2017 kkeithle at redhat.com
-- GlusterFS 3.12.2 python-request_s_
+- GlusterFS 3.12.3 python-request_s_, w/o python-jwt
 * Fri Oct 13 2017 kkeithle at redhat.com
 - GlusterFS 3.12.2 GA
 * Fri Sep 29 2017 kkeithle at redhat.com
