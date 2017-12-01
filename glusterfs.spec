@@ -61,7 +61,7 @@ BuildRequires:  pkgconfig(uuid)
 BuildRequires:  systemd
 %endif
 Requires:       python
-Requires:       python-request
+Requires:       python-requests
 Requires:       python-jwt
 
 %description
@@ -308,6 +308,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Fri Dec 1 2017 kkeithle at redhat.com
+- GlusterFS 3.12.2 python-request_s_
 * Fri Oct 13 2017 kkeithle at redhat.com
 - GlusterFS 3.12.2 GA
 * Fri Sep 29 2017 kkeithle at redhat.com
