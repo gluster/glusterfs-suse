@@ -18,7 +18,7 @@
 
 Name:           glusterfs
 # %%global prereltag rc1
-Version:        3.12.2%{?prereltag}
+Version:        3.12.3%{?prereltag}
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -61,6 +61,8 @@ BuildRequires:  pkgconfig(uuid)
 BuildRequires:  systemd
 %endif
 Requires:       python
+Requires:       python-request
+Requires:       python-jwt
 
 %description
 GlusterFS is a clustered file-system capable of scaling to several
