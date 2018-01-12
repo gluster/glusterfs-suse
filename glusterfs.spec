@@ -18,7 +18,7 @@
 
 Name:           glusterfs
 # %%global prereltag rc1
-Version:        3.12.4%{?prereltag}
+Version:        3.12.5%{?prereltag}
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -28,7 +28,6 @@ Url:            http://gluster.org/
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/3.10/%version/%name-%version.tar.gz
-Patch0001:      0001-Revert-eventsapi-Add-JWT-signing-support.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -141,7 +140,6 @@ links.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0001 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
@@ -309,6 +307,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Fri Jan 12 2018 kkeithle at redhat.com
+- GlusterFS 3.12.5 GA
 * Fri Dec 15 2017 kkeithle at redhat.com
 - GlusterFS 3.12.4 GA
 * Fri Dec 1 2017 kkeithle at redhat.com
