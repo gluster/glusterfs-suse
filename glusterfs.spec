@@ -18,7 +18,7 @@
 
 Name:           glusterfs
 # %%global prereltag rc1
-Version:        3.13.2%{?prereltag}
+Version:        4.0.0%{?prereltag}
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -27,8 +27,8 @@ Url:            http://gluster.org/
 
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
-Source:         http://download.gluster.org/pub/gluster/glusterfs/3.10/%version/%name-%version.tar.gz
-#Patch0001:      0001-Revert-eventsapi-Add-JWT-signing-support.patch
+Source:         http://download.gluster.org/pub/gluster/glusterfs/4.0/%version/%name-%version.tar.gz
+Patch001:       0001-libglusterfs-move-compat-RPC-XDR-defines-to-eliminat.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -47,6 +47,8 @@ BuildRequires:  glib2-devel
 BuildRequires:  libattr-devel
 BuildRequires:  libacl-devel
 BuildRequires:  rdma-core-devel
+BuildRequires:  libtirpc-devel
+BuildRequires:  rpcgen
 %if 0%{?sles_version} == 11
 BuildRequires:  fuse-devel >= 2.6.5
 BuildRequires:  libuuid-devel
@@ -141,7 +143,7 @@ links.
 
 %prep
 %setup -q -n %{name}-%{version}
-#%patch0001 -p1
+%patch0001 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
@@ -309,6 +311,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Tue Mar 6 2018 kkeithle at redhat.com
+- GlusterFS 4.0.0 GA
 * Sat Jan 20 2018 kkeithle at redhat.com
 - GlusterFS 3.13.2 GA
 * Thu Dec 21 2017 kkeithle at redhat.com
