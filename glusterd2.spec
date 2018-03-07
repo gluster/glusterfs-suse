@@ -126,5 +126,5 @@ install -d -m 0755 %{buildroot}%{_localstatedir}/log/%{name}
 %{_sysconfdir}/bash_completion.d/glustercli.sh
 
 %changelog
-* Wed Mar 07 2017 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 4.0.0-1
+* Wed Mar 07 2018 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 4.0.0-1
 - Initial 
