@@ -20,6 +20,7 @@
 %global repo glusterd2
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path %{provider_prefix}
+%global _sharedstatedir /var/lib
 
 %global gd2make %{__make} PREFIX=%{_prefix} EXEC_PREFIX=%{_exec_prefix} BINDIR=%{_bindir} SBINDIR=%{_sbindir} DATADIR=%{_datadir} LOCALSTATEDIR=%{_sharedstatedir} LOGDIR=%{_localstatedir}/log SYSCONFDIR=%{_sysconfdir} FASTBUILD=off
 
@@ -39,7 +40,7 @@ Source0: https://%{provider_prefix}/releases/download/v%{version}/%{name}-v%{ver
 
 ExclusiveArch: %{go_arches}
 
-BuildRequires: go >= 1.8.0
+BuildRequires: go >= 1.9.0
 BuildRequires: systemd
 BuildRequires: golang-packaging
 %if ! 0%{?with_bundled}
@@ -86,7 +87,6 @@ The new GlusterFS management framework and daemon, for GlusterFS-4.0.
 %build
 # export GOPATH=$(pwd):%{gopath}
 export GOPATH=$(pwd)
-echo $GOPATH
 mkdir -p src/%(dirname %{import_path})
 ln -s ../../../ src/%{import_path}
 
