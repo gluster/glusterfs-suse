@@ -18,8 +18,8 @@
 
 Name:           glusterfs
 # %%global prereltag rc1
-Version:        4.0.0%{?prereltag}
-Release:        101
+Version:        4.0.1%{?prereltag}
+Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
 Group:          System/Filesystems
@@ -28,7 +28,6 @@ Url:            http://gluster.org/
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/4.0/%version/%name-%version.tar.gz
-Patch001:       0001-libglusterfs-move-compat-RPC-XDR-defines-to-eliminat.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -143,7 +142,6 @@ links.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0001 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
@@ -311,6 +309,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Wed Mar 20 2018 kkeithle at redhat.com
+- GlusterFS 4.0.1 GA
 * Mon Mar 12 2018 kkeithle at redhat.com
 - GlusterFS 4.0.0 GA (v4.0.0-2 respin)
 * Tue Mar 6 2018 kkeithle at redhat.com
