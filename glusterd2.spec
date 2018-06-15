@@ -1,12 +1,10 @@
 %if 0%{?fedora}
-# Feb 14 2018 - GD2 does not build with the already available Go package
-# dependencies in Fedora. So until they are updated, build with the bundled
-# dependencies
-# TODO: Disable bundled builds once dependencies are met
-%global with_bundled 1
+%global with_bundled 0
 %else
 %global with_bundled 1
 %endif
+
+%{!?with_debug: %global with_debug 1}
 
 %if 0%{?with_debug}
 %global _dwz_low_mem_die_limit 0
@@ -14,18 +12,19 @@
 %global debug_package   %{nil}
 %endif
 
+%{!?go_arches: %global go_arches x86_64 aarch64 ppc64le }
+
 %global provider github
 %global provider_tld com
 %global project gluster
 %global repo glusterd2
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path %{provider_prefix}
-%global _sharedstatedir /var/lib
 
 %global gd2make %{__make} PREFIX=%{_prefix} EXEC_PREFIX=%{_exec_prefix} BINDIR=%{_bindir} SBINDIR=%{_sbindir} DATADIR=%{_datadir} LOCALSTATEDIR=%{_sharedstatedir} LOGDIR=%{_localstatedir}/log SYSCONFDIR=%{_sysconfdir} FASTBUILD=off
 
 Name: %{repo}
-Version: 4.0.0
+Version: 4.1.0
 Release: 1%{?dist}
 Summary: The GlusterFS management daemon (preview)
 License: GPLv2 or LGPLv3+
@@ -35,14 +34,14 @@ Source0: https://%{provider_prefix}/releases/download/v%{version}/%{name}-v%{ver
 %else
 Source0: https://%{provider_prefix}/releases/download/v%{version}/%{name}-v%{version}-0.tar.xz
 %endif
-
-%{!?go_arches: %global go_arches x86_64 aarch64 ppc64le }
+Source1: glusterd2-logrotate
 
 ExclusiveArch: %{go_arches}
 
-BuildRequires: go >= 1.9.0
-BuildRequires: systemd
+BuildRequires: go >= 1.10
 BuildRequires: golang-packaging
+BuildRequires: systemd
+
 %if ! 0%{?with_bundled}
 BuildRequires: golang(github.com/asaskevich/govalidator)
 BuildRequires: golang(github.com/cespare/xxhash)
@@ -74,19 +73,18 @@ BuildRequires: golang(golang.org/x/sys/unix)
 BuildRequires: golang(google.golang.org/grpc)
 %endif
 
-Requires: glusterfs-server >= 4.0.0
+Requires: glusterfs-server >= 4.1.0, glusterfs-server < 4.2.0
 Requires: /usr/bin/strings
 %{?systemd_requires}
 
 %description
-The new GlusterFS management framework and daemon, for GlusterFS-4.0.
+The new GlusterFS management framework and daemon, for GlusterFS-4.1.
 
 %prep
 %setup -q -n %{name}-v%{version}-0
 
 %build
-# export GOPATH=$(pwd):%{gopath}
-export GOPATH=$(pwd)
+export GOPATH=$(pwd):%{gopath}
 mkdir -p src/%(dirname %{import_path})
 ln -s ../../../ src/%{import_path}
 
@@ -98,23 +96,22 @@ pushd src/%{import_path}
 popd
 
 %install
-#Install glusterd2 & glustercli binaries and the config
+# Install glusterd2 & glustercli binaries and the config
 %{gd2make} DESTDIR=%{buildroot} install
-#Install systemd unit
+# Install systemd unit
 install -D -p -m 0644 extras/systemd/%{name}.service %{buildroot}%{_unitdir}/%{name}.service
 # Create /var/lib/glusterd2
 install -d -m 0755 %{buildroot}%{_sharedstatedir}/%{name}
-# logdir
+# Setup logdir
 install -d -m 0755 %{buildroot}%{_localstatedir}/log/%{name}
+# Install logrotate config
+install -D -p -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
 %post
 %systemd_post %{name}.service
 
 %preun
 %systemd_preun %{name}.service
-
-%postun
-%systemd_postun %{name}.service
 
 %files
 %{_sbindir}/%{name}
@@ -123,8 +120,12 @@ install -d -m 0755 %{buildroot}%{_localstatedir}/log/%{name}
 %{_unitdir}/%{name}.service
 %dir %{_sharedstatedir}/%{name}
 %dir %{_localstatedir}/log/%{name}
+%config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %{_sysconfdir}/bash_completion.d/glustercli.sh
 
 %changelog
-* Wed Mar 07 2017 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 4.0.0-1
+* Fri Jun 16 2018 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 4.1.0-1
+- GlusterD2 4.1.0 GA
+
+* Wed Mar 07 2018 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 4.0.0-1
 - Initial 
