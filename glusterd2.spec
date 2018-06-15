@@ -38,7 +38,7 @@ Source1: glusterd2-logrotate
 
 ExclusiveArch: %{go_arches}
 
-BuildRequires: go >= 1.9.0
+BuildRequires: go >= 1.10
 BuildRequires: golang-packaging
 BuildRequires: systemd
 
