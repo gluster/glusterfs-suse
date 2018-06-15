@@ -46,6 +46,8 @@ BuildRequires:  glib2-devel
 BuildRequires:  libattr-devel
 BuildRequires:  libacl-devel
 BuildRequires:  rdma-core-devel
+BuildRequires:  libtirpc-devel
+BuildRequires:  rpcgen
 %if 0%{?sles_version} == 11
 BuildRequires:  fuse-devel >= 2.6.5
 BuildRequires:  libuuid-devel
