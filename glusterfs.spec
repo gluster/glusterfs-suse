@@ -18,7 +18,7 @@
 
 Name:           glusterfs
 # %%global prereltag rc1
-Version:        4.1.1%{?prereltag}
+Version:        4.1.2%{?prereltag}
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -28,6 +28,7 @@ Url:            http://gluster.org/
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/4.0/%version/%name-%version.tar.gz
+Patch1:         0001-georep-fix-hard-coded-paths-in-gsyncd.conf.in.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -140,7 +141,7 @@ links.
 
 %prep
 %setup -q -n %{name}-%{version}
-#%patch0001 -p1
+%patch0001 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
@@ -308,6 +309,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Wed Jul 25 2018 kkeithle at redhat.com
+- GlusterFS 4.1.2 GA
 * Fri Jun 29 2018 kkeithle at redhat.com
 - GlusterFS 4.1.1 GA
 * Wed Jun 13 2018 kkeithle at redhat.com
