@@ -312,6 +312,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Tue Sep 4 2018 kkeithle at redhat.com
+- GlusterFS 4.1.3, create /var/run/gluster/metrics
 * Mon Aug 27 2018 kkeithle at redhat.com
 - GlusterFS 4.1.3 GA
 * Wed Jul 25 2018 kkeithle at redhat.com
