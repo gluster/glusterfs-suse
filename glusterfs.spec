@@ -19,7 +19,7 @@
 Name:           glusterfs
 # %%global prereltag rc1
 Version:        4.1.3%{?prereltag}
-Release:        100
+Release:        101
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
 Group:          System/Filesystems
@@ -155,6 +155,7 @@ make install DESTDIR="$b" docdir="%_docdir/%name"
 find "$b/%_libdir" -type f -name "*.la" -delete;
 
 mkdir -p "$b/%_localstatedir/log"/{glusterd,glusterfs,glusterfsd};
+mkdir -p "$b/%_localstatedir/run"/gluster/metrics;
 
 # The things seemingly forgotten by make install.
 # - Manually populate devel dirs
@@ -272,6 +273,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_docdir/%name
 %_localstatedir/lib/glusterd
 %_localstatedir/log/%name
+%_localstatedir/run/%name
+%_localstatedir/run/%name/metrics
 %python_sitelib/gluster*
 %if 0%{?_unitdir:1}
 %_unitdir/glusterd.service
