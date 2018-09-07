@@ -155,6 +155,7 @@ make install DESTDIR="$b" docdir="%_docdir/%name"
 find "$b/%_libdir" -type f -name "*.la" -delete;
 
 mkdir -p "$b/%_localstatedir/log"/{glusterd,glusterfs,glusterfsd};
+mkdir -p "$b/%_localstatedir/run"/gluster/metrics;
 
 # The things seemingly forgotten by make install.
 # - Manually populate devel dirs
@@ -272,6 +273,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_docdir/%name
 %_localstatedir/lib/glusterd
 %_localstatedir/log/%name
+%_localstatedir/run/gluster
+%_localstatedir/run/gluster/metrics
 %python_sitelib/gluster*
 %if 0%{?_unitdir:1}
 %_unitdir/glusterd.service
