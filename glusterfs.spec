@@ -18,7 +18,7 @@
 
 Name:           glusterfs
 # %%global prereltag rc1
-Version:        4.1.4%{?prereltag}
+Version:        4.1.5%{?prereltag}
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -310,6 +310,8 @@ mkdir -p /%_localstatedir/run/gluster/metrics
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Fri Sep 19 2018 kkeithle at redhat.com
+- GlusterFS 4.1.5 GA
 * Thu Sep 6 2018 kkeithle at redhat.com
 - GlusterFS 4.1.4 GA
 * Tue Sep 4 2018 kkeithle at redhat.com
