@@ -16,53 +16,58 @@
 #
 
 
-Name:           glusterfs
+Name:		glusterfs
 # %%global prereltag rc1
-Version:        4.1.5%{?prereltag}
-Release:        100
-Summary:        Aggregating distributed file system
-License:        GPL-2.0 or LGPL-3.0+
-Group:          System/Filesystems
-Url:            http://gluster.org/
+Version:	4.1.5%{?prereltag}
+Release:	101
+Summary:	Aggregating distributed file system
+License:	GPL-2.0 or LGPL-3.0+
+Group:		System/Filesystems
+Url:		http://gluster.org/
 
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
-Source:         http://download.gluster.org/pub/gluster/glusterfs/4.0/%version/%name-%version.tar.gz
-Patch1:         0001-georep-fix-hard-coded-paths-in-gsyncd.conf.in.patch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildRequires:  autoconf
-BuildRequires:  automake
-BuildRequires:  bison
-BuildRequires:  fdupes
-BuildRequires:  flex
-BuildRequires:  libaio-devel
-BuildRequires:  libtool
-BuildRequires:  pkgconfig
-BuildRequires:  python-devel
-BuildRequires:  python-ctypes
-BuildRequires:  readline-devel
-BuildRequires:  liburcu-devel >= 0.7
-BuildRequires:  sqlite3-devel
-BuildRequires:  glib2-devel
-BuildRequires:  libattr-devel
-BuildRequires:  libacl-devel
-BuildRequires:  rdma-core-devel
+Source:		http://download.gluster.org/pub/gluster/glusterfs/4.0/%version/%name-%version.tar.gz
+Patch1:		0001-georep-fix-hard-coded-paths-in-gsyncd.conf.in.patch
+BuildRoot:	%{_tmppath}/%{name}-%{version}-build
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	bison
+BuildRequires:	fdupes
+BuildRequires:	flex
+BuildRequires:	libaio-devel
+BuildRequires:	libtool
+BuildRequires:	pkgconfig
+BuildRequires:	python-devel
+BuildRequires:	python-ctypes
+BuildRequires:	readline-devel
+BuildRequires:	liburcu-devel >= 0.7
+BuildRequires:	sqlite3-devel
+BuildRequires:	glib2-devel
+BuildRequires:	libattr-devel
+BuildRequires:	libacl-devel
+BuildRequires:	rdma-core-devel
 %if 0%{?sles_version} == 11
-BuildRequires:  fuse-devel >= 2.6.5
-BuildRequires:  libuuid-devel
-BuildRequires:  libxml2-devel
-BuildRequires:  openssl-devel
+BuildRequires:	fuse-devel >= 2.6.5
+BuildRequires:	libuuid-devel
+BuildRequires:	libxml2-devel
+BuildRequires:	openssl-devel
 %else
-BuildRequires:  pkgconfig(fuse) >= 2.6.5
-BuildRequires:  pkgconfig(libcrypto)
-BuildRequires:  pkgconfig(libxml-2.0)
-BuildRequires:  pkgconfig(uuid)
+BuildRequires:	pkgconfig(fuse) >= 2.6.5
+BuildRequires:	pkgconfig(libcrypto)
+BuildRequires:	pkgconfig(libxml-2.0)
+BuildRequires:	pkgconfig(uuid)
 %endif
 %if 0%{?suse_version} >= 1210
-BuildRequires:  systemd
+BuildRequires:	systemd
 %endif
-Requires:       python
-Requires:       python-requests
+Requires:	python
+Requires:	python-requests
+Requires:	libglusterfs0 = %{version}
+Requires:	libgfapi0 = %{version}
+Requires:	libgfchangelog0 = %{version}
+Requires:	libgfrpc0 = %{version}
+Requires:	libgfxdr0 = %{version}
 
 %description
 GlusterFS is a clustered file-system capable of scaling to several
@@ -74,16 +79,16 @@ Translators from GNU Hurd kernel. Much of the code in GlusterFS is in
 user space and easily manageable.
 
 %package -n libgfapi0
-Summary:        GlusterFS API library
-Group:          System/Libraries
+Summary:	GlusterFS API library
+Group:		System/Libraries
 
 %description -n libgfapi0
 GlusterFS is a clustered file-system capable of scaling to several
 petabytes.
 
 %package -n libgfchangelog0
-Summary:        GlusterFS volume changelog translator library
-Group:          System/Libraries
+Summary:	GlusterFS volume changelog translator library
+Group:		System/Libraries
 
 %description -n libgfchangelog0
 GlusterFS is a clustered file-system capable of scaling to several
@@ -96,24 +101,24 @@ configured directory path (controlled by the "changelog-dir"
 directive).
 
 %package -n libgfrpc0
-Summary:        GlusterFS Remote Procedure Call library
-Group:          System/Libraries
+Summary:	GlusterFS Remote Procedure Call library
+Group:		System/Libraries
 
 %description -n libgfrpc0
 GlusterFS is a clustered file-system capable of scaling to several
 petabytes.
 
 %package -n libgfxdr0
-Summary:        GlusterFS's External Data Representation library
-Group:          System/Libraries
+Summary:	GlusterFS's External Data Representation library
+Group:		System/Libraries
 
 %description -n libgfxdr0
 GlusterFS is a clustered file-system capable of scaling to several
 petabytes.
 
 %package -n libglusterfs0
-Summary:        GlusterFS's core library
-Group:          System/Libraries
+Summary:	GlusterFS's core library
+Group:		System/Libraries
 
 %description -n libglusterfs0
 GlusterFS is a clustered file-system capable of scaling to several
@@ -121,16 +126,11 @@ petabytes.
 
 
 %package devel
-Summary:        Development files for glusterfs
-Group:          Development/Libraries/C and C++
-Requires:       %name = %version
-Requires:       libgfapi0 = %version
-Requires:       libgfchangelog0 = %version
-Requires:       libgfrpc0 = %version
-Requires:       libgfxdr0 = %version
-Requires:       libglusterfs0 = %version
-Requires:       libuuid-devel
-Requires:       libacl-devel
+Summary:	Development files for glusterfs
+Group:		Development/Libraries/C and C++
+Requires:	%name = %version
+Requires:	libuuid-devel
+Requires:	libacl-devel
 
 %description devel
 GlusterFS is a clustered file-system capable of scaling to several
