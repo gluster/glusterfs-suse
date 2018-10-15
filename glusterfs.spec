@@ -19,7 +19,7 @@
 Name:           glusterfs
 # %%global prereltag rc1
 Version:        4.1.5%{?prereltag}
-Release:        100
+Release:        101
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
 Group:          System/Filesystems
@@ -63,6 +63,11 @@ BuildRequires:  systemd
 %endif
 Requires:       python
 Requires:	python-requests
+Requires:	libglusterfs0 = %{version}
+Requires:	libgfapi0 = %{version}
+Requires:	libgfchangelog0 = %{version}
+Requires:	libgfrpc0 = %{version}
+Requires:	libgfxdr0 = %{version}
 
 %description
 GlusterFS is a clustered file-system capable of scaling to several
@@ -124,11 +129,6 @@ petabytes.
 Summary:        Development files for glusterfs
 Group:          Development/Libraries/C and C++
 Requires:       %name = %version
-Requires:       libgfapi0 = %version
-Requires:       libgfchangelog0 = %version
-Requires:       libgfrpc0 = %version
-Requires:       libgfxdr0 = %version
-Requires:       libglusterfs0 = %version
 Requires:       libuuid-devel
 Requires:       libacl-devel
 
