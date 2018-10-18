@@ -18,8 +18,8 @@
 
 Name:           glusterfs
 # %%global prereltag rc1
-Version:        4.1.5%{?prereltag}
-Release:        101
+Version:        5.0%{?prereltag}
+Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
 Group:          System/Filesystems
@@ -28,7 +28,6 @@ Url:            http://gluster.org/
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/4.0/%version/%name-%version.tar.gz
-Patch1:         0001-georep-fix-hard-coded-paths-in-gsyncd.conf.in.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -38,8 +37,7 @@ BuildRequires:  flex
 BuildRequires:  libaio-devel
 BuildRequires:  libtool
 BuildRequires:  pkgconfig
-BuildRequires:  python-devel
-BuildRequires:  python-ctypes
+BuildRequires:  python3-devel
 BuildRequires:  readline-devel
 BuildRequires:  liburcu-devel >= 0.7
 BuildRequires:  sqlite3-devel
@@ -61,8 +59,8 @@ BuildRequires:  pkgconfig(uuid)
 %if 0%{?suse_version} >= 1210
 BuildRequires:  systemd
 %endif
-Requires:       python
-Requires:	python-requests
+Requires:       python3
+Requires:	python3-requests
 Requires:	libglusterfs0 = %{version}
 Requires:	libgfapi0 = %{version}
 Requires:	libgfchangelog0 = %{version}
@@ -146,13 +144,12 @@ links.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0001 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
 %configure --disable-static --enable-gnfs
 # This section is not parallel safe or so due to bison/lex
-make %{?_smp_mflags};
+make V=1 %{?_smp_mflags};
 
 %install
 b="%buildroot";
@@ -160,7 +157,6 @@ make install DESTDIR="$b" docdir="%_docdir/%name"
 find "$b/%_libdir" -type f -name "*.la" -delete;
 
 mkdir -p "$b/%_localstatedir/log"/{glusterd,glusterfs,glusterfsd};
-mkdir -p "$b/%_localstatedir/run"/gluster/metrics;
 
 # The things seemingly forgotten by make install.
 # - Manually populate devel dirs
@@ -278,9 +274,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_docdir/%name
 %_localstatedir/lib/glusterd
 %_localstatedir/log/%name
-%_localstatedir/run/gluster
-%_localstatedir/run/gluster/metrics
-%python_sitelib/gluster*
+%python3_sitelib/gluster*
 %if 0%{?_unitdir:1}
 %_unitdir/glusterd.service
 %_unitdir/glustereventsd.service
@@ -317,6 +311,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Thu Oct 18 2018 kkeithle at redhat.com
+- GlusterFS 5.0 GA
 * Fri Sep 19 2018 kkeithle at redhat.com
 - GlusterFS 4.1.5 GA
 * Thu Sep 6 2018 kkeithle at redhat.com
