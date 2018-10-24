@@ -23,18 +23,29 @@
 
 %global gd2make %{__make} PREFIX=%{_prefix} EXEC_PREFIX=%{_exec_prefix} BINDIR=%{_bindir} SBINDIR=%{_sbindir} DATADIR=%{_datadir} LOCALSTATEDIR=%{_sharedstatedir} LOGDIR=%{_localstatedir}/log SYSCONFDIR=%{_sysconfdir} FASTBUILD=off
 
+%global gd2version 5.0
+# gd2prerel is only used for pre-releases. Comment it out for normal releases
+#global gd2prerel rc1
+# gd2tarbase is the base name for the GD2 source tarball
+%global gd2tarbase glusterd2-v%{gd2version}-%{!?gd2prerel:0}%{?gd2prerel}
+
 Name: %{repo}
-Version: 4.1.0
-Release: 1%{?dist}
-Summary: The GlusterFS management daemon (preview)
+Group: System/Filesystems
+Version: %{gd2version}
+Release: 1%{?gd2prerel:.%{gd2prerel}}%{?dist}
+Summary: The new GlusterFS management daemon (preview)
 License: GPLv2 or LGPLv3+
 URL: https://%{provider_prefix}
-%if 0%{?with_bundled}
-Source0: https://%{provider_prefix}/releases/download/v%{version}/%{name}-v%{version}-0-vendor.tar.xz
+%if ! 0%{?with_bundled}
+Source0: https://%{provider_prefix}/releases/download/v%{gd2version}%{?gd2prerel:-%{gd2prerel}}/%{gd2tarbase}.tar.xz
 %else
-Source0: https://%{provider_prefix}/releases/download/v%{version}/%{name}-v%{version}-0.tar.xz
+Source0: https://%{provider_prefix}/releases/download/v%{gd2version}%{?gd2prerel:-%{gd2prerel}}/%{gd2tarbase}-vendor.tar.xz
 %endif
 Source1: glusterd2-logrotate
+# TODO: Remove once golang-googlecode-goprotobuf has been updated to >=1.0.0
+%if ! 0%{?with_bundled}
+Patch0: 0001-Revert-Refresh-protobuf-generated-code.patch
+%endif
 
 ExclusiveArch: %{go_arches}
 
@@ -71,20 +82,25 @@ BuildRequires: golang(github.com/thejerf/suture)
 BuildRequires: golang(golang.org/x/net/context)
 BuildRequires: golang(golang.org/x/sys/unix)
 BuildRequires: golang(google.golang.org/grpc)
+BuildRequires: golang(go.opencensus.io)
 %endif
 
-Requires: glusterfs-server >= 4.1.0, glusterfs-server < 4.2.0
+Requires: glusterfs-server >= 5.0
 Requires: /usr/bin/strings
 %{?systemd_requires}
 
 %description
-The new GlusterFS management framework and daemon, for GlusterFS-4.1.
+The new GlusterFS management framework and daemon, for GlusterFS-5.0.
 
 %prep
-%setup -q -n %{name}-v%{version}-0
+%setup -q -n %{gd2tarbase}
+# TODO: Remove once golang-googlecode-goprotobuf has been updated to >=1.0.0
+%if ! 0%{?with_bundled}
+%patch0 -p1
+%endif
 
 %build
-export GOPATH=$(pwd):%{gopath}
+export GOPATH=$(pwd):${PATH}
 mkdir -p src/%(dirname %{import_path})
 ln -s ../../../ src/%{import_path}
 
@@ -106,6 +122,8 @@ install -d -m 0755 %{buildroot}%{_sharedstatedir}/%{name}
 install -d -m 0755 %{buildroot}%{_localstatedir}/log/%{name}
 # Install logrotate config
 install -D -p -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+# Setup sysconfig dir
+# install -d -m 0755 %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 
 %post
 %systemd_post %{name}.service
@@ -122,10 +140,43 @@ install -D -p -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %dir %{_localstatedir}/log/%{name}
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %{_sysconfdir}/bash_completion.d/glustercli.sh
+# %%config %{_sysconfdir}/sysconfig/%{name}
 
 %changelog
-* Fri Jun 16 2018 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 4.1.0-1
-- GlusterD2 4.1.0 GA
+* Tue Oct 23 2018 Kaushal M <kshlmster@gmail.com> - 5.0-1
+- Update for v5.0-1 GA
 
-* Wed Mar 07 2018 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 4.0.0-1
-- Initial 
+* Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 4.1.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
+* Fri Jun 15 2018 Kaushal M <kshlmster@gmail.com> - 4.1.0-1
+- Update to v4.1.0
+
+* Wed Mar 14 2018 Kaushal M <kshlmster@gmail.com> - 4.0.0-2
+- Add logrotate configuration
+- Correct BuildRequires on go_compiler
+- Build with unbundled on Fedora
+- Fix go_arches for EL
+- Require glusterfs-server < 4.1.0
+
+* Wed Feb 28 2018 Kaushal M <kshlmster@gmail.com> - 4.0.0-1
+- Update to v4.0.0
+
+* Wed Feb 14 2018 Kaushal M <kshlmster@gmail.com> - 4.0rc0-2
+- Update spec to support unbundled/vendored builds
+- Fedora defaults to bundled builds till all required dependencies are available
+
+* Tue Jan 30 2018 Kaushal M <kshlmster@gmail.com> - 4.0rc0-1
+- Switch ExclusiveArch to go_arches
+
+* Fri Jan 12 2018 Kaushal M <kshlmster@gmail.com> - 4.0dev-10
+- Use standard paths to build and install
+
+* Wed Nov 08 2017 Kaushal M <kshlmster@gmail.com> - 4.0dev-9
+- Build with vendored tarball.
+
+* Thu Oct 26 2017 Kaushal M <kshlmster@gmail.com> - 4.0dev-8
+- Update spec file
+
+* Mon Jul 03 2017 Kaushal M <kshlmster@gmail.com> - 4.0dev-7
+- Initial spec
