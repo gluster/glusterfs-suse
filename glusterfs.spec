@@ -18,7 +18,7 @@
 
 Name:           glusterfs
 # %%global prereltag rc1
-Version:        5.5%{?prereltag}
+Version:        6.0%{?prereltag}
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -200,6 +200,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %pre
 %service_add_pre glusterd.service
 %service_add_pre glustereventsd.service
+%service_add_pre gluster-ta-volume.service
 %service_add_pre glusterfssharedstorage.service
 %endif
 
@@ -207,6 +208,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %if 0%{?suse_version} >= 1210
 %service_add_post glusterd.service
 %service_add_post glustereventsd.service
+%service_add_post gluster-ta-volume.service
 %service_add_post glusterfssharedstorage.service
 %else
 %fillup_and_insserv -f glusterd
@@ -216,6 +218,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %if 0%{?suse_version} >= 1210
 %service_del_preun glusterd.service
 %service_del_preun glustereventsd.service
+%service_del_preun gluster-ta-volume.service
 %service_del_preun glusterfssharedstorage.service
 %else
 %stop_on_removal glusterd
@@ -225,6 +228,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %if 0%{?suse_version} >= 1210
 %service_del_postun glusterd.service
 %service_del_postun glustereventsd.service
+%service_del_postun gluster-ta-volume.service
 %service_del_postun glusterfssharedstorage.service
 %else
 %insserv_cleanup
@@ -256,8 +260,6 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 /sbin/mount.%name
 %_libexecdir/%name/
 %_libdir/%name/
-%_libdir/libgfdb.so.*
-%exclude %_libdir/libgfdb.so
 %_sbindir/gluster*
 %_sbindir/gf_attach
 %_sbindir/glfsheal
@@ -275,6 +277,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %if 0%{?_unitdir:1}
 %_unitdir/glusterd.service
 %_unitdir/glustereventsd.service
+%_unitdir/gluster-ta-volume.service
 %_unitdir/glusterfssharedstorage.service
 %else
 %_initddir/glusterd*
@@ -308,6 +311,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Wed Mar 20 2019 kkeithle at redhat.com
+- GlusterFS 6.0 GA
 * Fri Mar 15 2019 kkeithle at redhat.com
 - GlusterFS 5.5 GA
 * Tue Mar 5 2019 kkeithle at redhat.com
