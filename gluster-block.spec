@@ -18,7 +18,8 @@ Patch0:           gluster-block-0.4-logrotate.patch
 BuildRequires:    pkgconfig(glusterfs-api)
 BuildRequires:    pkgconfig(json-c)
 BuildRequires:    help2man >= 1.36
-
+BuildRequires:    libtirpc-devel
+BuildRequires:    rpcgen
 BuildRequires:    systemd
 # tarball releases require running ./autogen.sh
 BuildRequires:    automake, autoconf, libtool, git
@@ -76,6 +77,7 @@ touch %{buildroot}%{_sharedstatedir}/gluster-block/gb_upgrade.status
 %ghost %{_sharedstatedir}/gluster-block/gb_upgrade.status
 %config(noreplace) %{_sharedstatedir}/gluster-block/gluster-block-caps.info
 
+%changelog
 * Tue May 7 2019 Kaleb S. KEITHLEY <kkeithle at redhat.com> - 0.4-1
 
 * Tue Oct 17 2017 Kaleb S. KEITHLEY <kkeithle at redhat.com> - 0.3-1
