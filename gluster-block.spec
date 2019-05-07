@@ -26,6 +26,7 @@ BuildRequires:    automake, autoconf, libtool, git
 Requires:         tcmu-runner >= 1.1.3
 Requires:         targetcli >= 2.1.fb49
 Requires:         rpcbind
+Requires:         logrotate
 
 %{?systemd_requires}
 
@@ -41,12 +42,18 @@ storage creation and maintenance as simple as possible.
 echo %{version} > VERSION
 ./autogen.sh
 %configure
-%make_build
+make V=1
 
 %install
 %make_install
 
-touch %{buildroot}%{_sharedstatedir}/gluster-block/gb_upgrade.status
+mkdir -p %{buildroot}/%{_fillupdir}
+mv %{buildroot}%{_sysconfdir}/sysconfig/gluster-blockd \
+   %{buildroot}/%{_fillupdir}/sysconfig.gluster-blockd
+
+%pre
+%service_add_pre gluster-block-target.service
+%service_add_pre gluster-blockd.service
 
 %post
 %service_add_post gluster-block-target.service
@@ -69,13 +76,13 @@ touch %{buildroot}%{_sharedstatedir}/gluster-block/gb_upgrade.status
 %doc %{_mandir}/man8/gluster-block*.8*
 %{_unitdir}/gluster-blockd.service
 %{_unitdir}/gluster-block-target.service
-%config(noreplace) %{_sysconfdir}/sysconfig/gluster-blockd
+%dir /%{_fillupdir}
+%{_fillupdir}/sysconfig.gluster-blockd
 %config(noreplace) %{_sysconfdir}/logrotate.d/gluster-block
 %{_libexecdir}/gluster-block
 %dir %{_localstatedir}/log/gluster-block
-%dir %{_sharedstatedir}/gluster-block
-%ghost %{_sharedstatedir}/gluster-block/gb_upgrade.status
-%config(noreplace) %{_sharedstatedir}/gluster-block/gluster-block-caps.info
+%dir %{_localstatedir}/lib/gluster-block
+%config(noreplace) %{_localstatedir}/lib/gluster-block/gluster-block-caps.info
 
 %changelog
 * Tue May 7 2019 Kaleb S. KEITHLEY <kkeithle at redhat.com> - 0.4-1
