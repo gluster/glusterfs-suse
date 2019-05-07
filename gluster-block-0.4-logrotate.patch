@@ -1,0 +1,125 @@
+From 9dcb253bcb39109cf42502258d2d0c086c15998f Mon Sep 17 00:00:00 2001
+From: Prasanna Kumar Kalever <prasanna.kalever@redhat.com>
+Date: Thu, 2 May 2019 15:08:23 +0530
+Subject: [PATCH] logrotate: rename logrotate config file
+
+Problem:
+-------
+Build was failing with:
+[root@localhost x86_64]# rpmlint gluster-block-0.4-1.x86_64.rpm
+gluster-block.x86_64: E: incoherent-logrotate-file /etc/logrotate.d/gluster-blockd
+1 packages and 0 specfiles checked; 1 errors.
+
+Solution:
+--------
+incoherent-logrotate-file ?
+
+Solution:- The log file or directory name should be the same as the
+package name in lower case.
+
+Hence renaming the logrotate filename back to gluster-block
+
+Signed-off-by: Prasanna Kumar Kalever <prasanna.kalever@redhat.com>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+---
+ docs/gluster-block.8                                      | 2 +-
+ docs/gluster-blockd.8                                     | 2 +-
+ extras/Makefile.am                                        | 8 ++++----
+ .../{gluster-blockd.logrotate => gluster-block.logrotate} | 0
+ gluster-block.spec.in                                     | 5 ++++-
+ utils/utils.h                                             | 2 +-
+ 6 files changed, 11 insertions(+), 8 deletions(-)
+ rename extras/{gluster-blockd.logrotate => gluster-block.logrotate} (100%)
+
+diff --git a/docs/gluster-block.8 b/docs/gluster-block.8
+index 6322cef..d7c2a88 100644
+--- a/docs/gluster-block.8
++++ b/docs/gluster-block.8
+@@ -190,7 +190,7 @@ To generate the block volumes target configuration and load it
+ .br
+ /etc/sysconfig/gluster-blockd
+ .br
+-/etc/logrotate.d/gluster-blockd
++/etc/logrotate.d/gluster-block
+ .PP
+ 
+ 
+diff --git a/docs/gluster-blockd.8 b/docs/gluster-blockd.8
+index 44652b3..6c172a4 100644
+--- a/docs/gluster-blockd.8
++++ b/docs/gluster-blockd.8
+@@ -68,7 +68,7 @@ Run gluster-blockd in ignore remote rpc mode
+ .br
+ /etc/sysconfig/gluster-blockd
+ .br
+-/etc/logrotate.d/gluster-blockd
++/etc/logrotate.d/gluster-block
+ .PP
+ 
+ 
+diff --git a/extras/Makefile.am b/extras/Makefile.am
+index 67a77b5..89430eb 100644
+--- a/extras/Makefile.am
++++ b/extras/Makefile.am
+@@ -1,5 +1,5 @@
+ EXTRA_DIST = replace-node.sh wait-for-bricks.sh upgrade_activities.sh            \
+-			 gluster-blockd.logrotate
++			 gluster-block.logrotate
+ 
+ DISTCLEANFILES = Makefile.in
+ 
+@@ -12,11 +12,11 @@ install-data-local:
+ 	$(INSTALL_DATA) -m 755 $(top_srcdir)/extras/upgrade_activities.sh            \
+ 		$(DESTDIR)$(GLUSTER_BLOCKD_LIBEXECDIR)/upgrade_activities.sh;            \
+ 	$(MKDIR_P) $(DESTDIR)$(GLUSTER_BLOCKD_LOGROTATEDIR);                         \
+-	$(INSTALL_DATA) gluster-blockd.logrotate                               \
+-		$(DESTDIR)$(GLUSTER_BLOCKD_LOGROTATEDIR)/gluster-blockd;
++	$(INSTALL_DATA) gluster-block.logrotate                               \
++		$(DESTDIR)$(GLUSTER_BLOCKD_LOGROTATEDIR)/gluster-block;
+ 
+ uninstall-local:
+ 	rm -f $(DESTDIR)$(GLUSTER_BLOCKD_LIBEXECDIR)/wait-for-bricks.sh              \
+ 		$(DESTDIR)$(GLUSTER_BLOCKD_LIBEXECDIR)/upgrade_activities.sh             \
+ 		$(DESTDIR)$(GLUSTER_BLOCKD_WORKDIR)/gb_upgrade.status                    \
+-		$(DESTDIR)$(GLUSTER_BLOCKD_LOGROTATEDIR)/gluster-blockd;
++		$(DESTDIR)$(GLUSTER_BLOCKD_LOGROTATEDIR)/gluster-block;
+diff --git a/extras/gluster-blockd.logrotate b/extras/gluster-block.logrotate
+similarity index 100%
+rename from extras/gluster-blockd.logrotate
+rename to extras/gluster-block.logrotate
+diff --git a/gluster-block.spec.in b/gluster-block.spec.in
+index 201a364..af9d80f 100644
+--- a/gluster-block.spec.in
++++ b/gluster-block.spec.in
+@@ -91,7 +91,7 @@ rm -rf ${RPM_BUILD_ROOT}
+ %attr(0755,-,-) %{_initddir}/gluster-blockd
+ %endif
+ %config(noreplace) %{_sysconfdir}/sysconfig/gluster-blockd
+-%config(noreplace) %{_sysconfdir}/logrotate.d/gluster-blockd
++%config(noreplace) %{_sysconfdir}/logrotate.d/gluster-block
+ %dir %attr(0755,-,-) %{_libexecdir}/gluster-block
+      %attr(0755,-,-) %{_libexecdir}/gluster-block/wait-for-bricks.sh
+      %attr(0755,-,-) %{_libexecdir}/gluster-block/upgrade_activities.sh
+@@ -99,6 +99,9 @@ rm -rf ${RPM_BUILD_ROOT}
+      %attr(0644,-,-) %{_sharedstatedir}/gluster-block/gluster-block-caps.info
+ 
+ %changelog
++* Thu May 02 2019 Prasanna Kumar Kalever <prasanna.kalever@redhat.com>
++- Renaming logrotate configure file back to project name
++
+ * Fri Apr 26 2019 Xiubo Li <xiubli@redhat.com>
+ - Rename logrotate configure file
+ 
+diff --git a/utils/utils.h b/utils/utils.h
+index 40250e6..b24827a 100644
+--- a/utils/utils.h
++++ b/utils/utils.h
+@@ -29,7 +29,7 @@
+ 
+ # include  "list.h"
+ 
+-# define  GB_LOGROTATE_PATH      "/etc/logrotate.d/gluster-blockd"
++# define  GB_LOGROTATE_PATH      "/etc/logrotate.d/gluster-block"
+ # define  GB_LOGDIR_DEF          DATADIR "/log/gluster-block"
+ # define  GB_INFODIR             DATADIR "/run"
+ 
