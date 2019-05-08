@@ -84,7 +84,7 @@ The new GlusterFS management framework and daemon, for GlusterFS-4.1.
 %setup -q -n %{name}-v%{version}-0
 
 %build
-export GOPATH=$(pwd):%{gopath}
+export GOPATH=$(pwd)
 mkdir -p src/%(dirname %{import_path})
 ln -s ../../../ src/%{import_path}
 
@@ -108,10 +108,16 @@ install -d -m 0755 %{buildroot}%{_localstatedir}/log/%{name}
 install -D -p -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
 %post
-%systemd_post %{name}.service
+%service_add_post %{name}.service
+
+%pre
+%service_add_pre %{name}.service
 
 %preun
-%systemd_preun %{name}.service
+%service_del_preun %{name}.service
+
+%postun
+%service_del_postun %{name}.service
 
 %files
 %{_sbindir}/%{name}
@@ -124,7 +130,7 @@ install -D -p -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %{_sysconfdir}/bash_completion.d/glustercli.sh
 
 %changelog
-* Fri Jun 16 2018 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 4.1.0-1
+* Fri Jun 15 2018 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 4.1.0-1
 - GlusterD2 4.1.0 GA
 
 * Wed Mar 07 2018 Kaleb S. KEITHLEY <kkeithle[at]redhat.com> - 4.0.0-1
