@@ -144,7 +144,7 @@ links.
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
-%configure --disable-static --enable-gnfs
+%configure --disable-static --disable-gnfs
 # This section is not parallel safe or so due to bison/lex
 make V=1 %{?_smp_mflags};
 
