@@ -17,8 +17,8 @@
 
 
 Name:           glusterfs
-# %%global prereltag rc1
-Version:        6.5%{?prereltag}
+%global prereltag rc3
+Version:        7.0%{?prereltag}
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -27,7 +27,7 @@ Url:            http://gluster.org/
 
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
-Source:         http://download.gluster.org/pub/gluster/glusterfs/4.0/%version/%name-%version.tar.gz
+Source:         http://download.gluster.org/pub/gluster/glusterfs/7/%version/%name-%version.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
