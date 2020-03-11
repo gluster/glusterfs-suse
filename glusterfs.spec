@@ -18,7 +18,7 @@
 
 Name:           glusterfs
 # %%global prereltag rc1
-Version:        6.7%{?prereltag}
+Version:        6.8%{?prereltag}
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -314,6 +314,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Mon Jan 8 2020 sacharya at redhat.com
+- GlusterFS 6.8 GA
 * Thu Jan 2 2020 spamecha at redhat.com
 - GlusterFS 6.7 GA
 * Mon Oct 28 2019 spamecha at redhat.com
