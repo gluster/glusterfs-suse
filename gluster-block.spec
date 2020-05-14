@@ -1,3 +1,4 @@
+
 ##-----------------------------------------------------------------------------
 ## All %%global definitions should be placed here and keep them sorted
 ##
@@ -8,12 +9,12 @@
 ##
 Summary:          Gluster block storage utility
 Name:             gluster-block
-Version:          0.4
+Version:          0.5
 Release:          1%{?dist}
 License:          GPL-2.0 or LGPL-3.0+
 URL:              https://github.com/gluster/gluster-block
 Source0:          https://github.com/gluster/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
-Patch0:           gluster-block-0.4-logrotate.patch
+Patch0001:        0001-configure.ac.patch
 
 BuildRequires:    pkgconfig(glusterfs-api)
 BuildRequires:    pkgconfig(json-c)
@@ -36,7 +37,7 @@ storage creation and maintenance as simple as possible.
 
 %prep
 %setup -q
-%patch0 -p1
+%patch0001 -p1
 
 %build
 echo %{version} > VERSION
@@ -72,19 +73,22 @@ mv %{buildroot}%{_sysconfdir}/sysconfig/gluster-blockd \
 %doc README.md
 %{_sbindir}/gluster-block
 %{_sbindir}/gluster-blockd
-
 %doc %{_mandir}/man8/gluster-block*.8*
+%dir %{_localstatedir}/log/gluster-block
 %{_unitdir}/gluster-blockd.service
 %{_unitdir}/gluster-block-target.service
 %dir /%{_fillupdir}
 %{_fillupdir}/sysconfig.gluster-blockd
 %config(noreplace) %{_sysconfdir}/logrotate.d/gluster-block
-%{_libexecdir}/gluster-block
-%dir %{_localstatedir}/log/gluster-block
+%dir %{_libexecdir}/gluster-block
+     %{_libexecdir}/gluster-block/wait-for-bricks.sh
+     %{_libexecdir}/gluster-block/upgrade_activities.sh
 %dir %{_localstatedir}/lib/gluster-block
 %config(noreplace) %{_localstatedir}/lib/gluster-block/gluster-block-caps.info
 
 %changelog
+* Thu May 14 2020 Kaleb S. KEITHLEY <kkeithle at redhat.com> - 0.5-1
+
 * Tue May 7 2019 Kaleb S. KEITHLEY <kkeithle at redhat.com> - 0.4-1
 
 * Tue Oct 17 2017 Kaleb S. KEITHLEY <kkeithle at redhat.com> - 0.3-1
