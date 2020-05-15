@@ -1,0 +1,16 @@
+--- gluster-block-0.5/configure.ac.orig	2020-05-14 09:28:47.184847105 -0400
++++ gluster-block-0.5/configure.ac	2020-05-14 09:40:59.032566893 -0400
+@@ -139,13 +139,6 @@
+ GLUSTER_BLOCKD_WORKDIR="${LOCALSTATEDIR}/lib/gluster-block"
+ AC_SUBST(GLUSTER_BLOCKD_WORKDIR)
+ 
+-if test "x$prefix" = xNONE; then
+-   test $libexecdir = '${prefix}/libexec' && localstatedir=$ac_default_prefix/libexec
+-   libexecdir=/usr/libexec
+-else
+-   libexecdir='${prefix}/libexec'
+-fi
+-
+ GLUSTER_BLOCKD_LIBEXECDIR="$(eval echo ${libexecdir}/gluster-block)"
+ AC_SUBST(GLUSTER_BLOCKD_LIBEXECDIR)
+ 
