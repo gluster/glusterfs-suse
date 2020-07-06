@@ -28,6 +28,7 @@ Url:            http://gluster.org/
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/6/%version/%name-%version.tar.gz
+Patch0001:      0001-api-libgfapi-symbol-versions-break-LTO-in-Fedora-raw.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -146,6 +147,7 @@ links.
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch0001 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
@@ -318,7 +320,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %changelog
 * Thu Apr 23 2020 sacharya at redhat.com
 - GlusterFS 6.9 GA
-* Mon Jan 8 2020 sacharya at redhat.com
+* Wed Jan 8 2020 sacharya at redhat.com
 - GlusterFS 6.8 GA
 * Thu Jan 2 2020 spamecha at redhat.com
 - GlusterFS 6.7 GA
