@@ -18,7 +18,7 @@
 
 Name:           glusterfs
 # %%global prereltag rc1
-Version:        7.6%{?prereltag}
+Version:        8.0%{?prereltag}
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -27,7 +27,8 @@ Url:            http://gluster.org/
 
 #Git-Clone:	git://github.com/gluster/glusterfs
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
-Source:         http://download.gluster.org/pub/gluster/glusterfs/7/%version/%name-%version.tar.gz
+Source:         http://download.gluster.org/pub/gluster/glusterfs/4.0/%version/%name-%version.tar.gz
+Patch0001:      0001-api-libgfapi-symbol-versions-break-LTO-in-Fedora-raw.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -78,17 +79,57 @@ features and extensibility. It borrows a powerful concept called
 Translators from GNU Hurd kernel. Much of the code in GlusterFS is in
 user space and easily manageable.
 
+%package -n libglusterfs0
+Summary:        GlusterFS's core library
+Group:          System/Libraries
+Requires:       libgfrpc0%{?_isa} = %version
+Requires:       libgfxdr0%{?_isa} = %version
+
+%description -n libglusterfs0
+GlusterFS is a clustered file-system capable of scaling to several
+petabytes.
+
+%package -n libglusterfs-devel
+Summary:        Development files for glusterfs
+Group:          Development/Libraries/C and C++
+Requires:       %name = %version
+Requires:       libglusterfs0 = %version
+Requires:       libgfapi0 = %version
+Requires:       libgfchangelog0 = %version
+Requires:       libgfrpc0 = %version
+Requires:       libgfxdr0 = %version
+Requires:       libglusterd0 = %version
+Requires:       libuuid-devel
+Requires:       libacl-devel
+
+%description -n libglusterfs-devel
+GlusterFS is a clustered file-system capable of scaling to several
+petabytes.
+
+This package provides development files such as headers and library
+links.
+
 %package -n libgfapi0
 Summary:        GlusterFS API library
 Group:          System/Libraries
+Requires:       libglusterfs0 = %version
 
 %description -n libgfapi0
+GlusterFS is a clustered file-system capable of scaling to several
+petabytes.
+
+%package -n libgfapi-devel
+Summary:        GlusterFS API library
+Group:          System/Libraries
+
+%description -n libgfapi-devel
 GlusterFS is a clustered file-system capable of scaling to several
 petabytes.
 
 %package -n libgfchangelog0
 Summary:        GlusterFS volume changelog translator library
 Group:          System/Libraries
+Requires:       libglusterfs0 = %version
 
 %description -n libgfchangelog0
 GlusterFS is a clustered file-system capable of scaling to several
@@ -100,52 +141,60 @@ a GlusterFS volume. The translator needs to be loaded on the server
 configured directory path (controlled by the "changelog-dir"
 directive).
 
+%package -n libgfchangelog-devel
+Summary:        GlusterFS changelog library
+Group:          System/Libraries
+
+%description -n libgfchangelog-devel
+GlusterFS is a clustered file-system capable of scaling to several
+petabytes.
+
 %package -n libgfrpc0
 Summary:        GlusterFS Remote Procedure Call library
 Group:          System/Libraries
+Requires:       libglusterfs0 = %version
 
 %description -n libgfrpc0
+GlusterFS is a clustered file-system capable of scaling to several
+petabytes.
+
+%package -n libgfrpc-devel
+Summary:        GlusterFS rpc library
+Group:          System/Libraries
+
+%description -n libgfrpc-devel
 GlusterFS is a clustered file-system capable of scaling to several
 petabytes.
 
 %package -n libgfxdr0
 Summary:        GlusterFS's External Data Representation library
 Group:          System/Libraries
+Requires:       libglusterfs0 = %version
 
 %description -n libgfxdr0
 GlusterFS is a clustered file-system capable of scaling to several
 petabytes.
 
-%package -n libglusterfs0
-Summary:        GlusterFS's core library
+%package -n libgfxdr-devel
+Summary:        GlusterFS rpc library
 Group:          System/Libraries
 
-%description -n libglusterfs0
+%description -n libgfxdr-devel
 GlusterFS is a clustered file-system capable of scaling to several
 petabytes.
 
-
-%package devel
-Summary:        Development files for glusterfs
-Group:          Development/Libraries/C and C++
-Requires:       %name = %version
-Requires:       libgfapi0 = %version
-Requires:       libgfchangelog0 = %version
-Requires:       libgfrpc0 = %version
-Requires:       libgfxdr0 = %version
+%package -n libglusterd0
+Summary:        GlusterFS's External Data Representation library
+Group:          System/Libraries
 Requires:       libglusterfs0 = %version
-Requires:       libuuid-devel
-Requires:       libacl-devel
 
-%description devel
+%description -n libglusterd0
 GlusterFS is a clustered file-system capable of scaling to several
 petabytes.
-
-This package provides development files such as headers and library
-links.
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch0001 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
@@ -267,7 +316,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/%name/
 %_sbindir/gluster*
 %_sbindir/gf_attach
-%_sbindir/glfsheal
+%_libexecdir/%name/glfsheal
 %_sbindir/rcglusterd
 %_sbindir/gcron.py
 %_sbindir/gfind_missing_files
@@ -288,10 +337,18 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_initddir/glusterd*
 %endif
 %_prefix/lib/ocf
+%exclude %_libexecdir/ganesha/*
+%exclude %_sysconfdir/ganesha/*
+%exclude %_libdir/glusterfs/%{version}%{?prereltag}/xlator/mount/api.so
+
+%files -n libglusterfs0
+%defattr(-,root,root)
+%_libdir/libglusterfs.so.0*
 
 %files -n libgfapi0
 %defattr(-,root,root)
 %_libdir/libgfapi.so.0*
+%_libdir/glusterfs/%{version}%{?prereltag}/xlator/mount/api.so
 
 %files -n libgfchangelog0
 %defattr(-,root,root)
@@ -305,17 +362,48 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %defattr(-,root,root)
 %_libdir/libgfxdr.so.0*
 
-%files -n libglusterfs0
+%files -n libglusterd0
 %defattr(-,root,root)
-%_libdir/libglusterfs.so.0*
+%{_libdir}/libglusterd.so.*
+%exclude %{_libdir}/libglusterd.so
 
-%files devel
+%files -n libglusterfs-devel
 %defattr(-,root,root)
 %_includedir/%name
-%_libdir/*.so
-%_libdir/pkgconfig/*.pc
+%_includedir/%name/*.h
+%_includedir/%name/server/*.h
+%{_libdir}/libglusterfs.so
+%exclude %{_includedir}/glusterfs/api/*.h
+%exclude %{_includedir}/glusterfs/gfchangelog/*.h
+%exclude %{_includedir}/glusterfs/rpc/*.h
+
+%files -n libgfapi-devel
+%defattr(-,root,root)
+%{_includedir}/glusterfs/api
+%{_includedir}/glusterfs/api/*.h
+%{_libdir}/libgfapi.so
+%_libdir/pkgconfig/glusterfs-api.pc
+
+%files -n libgfchangelog-devel
+%defattr(-,root,root)
+%{_includedir}/glusterfs/gfchangelog
+%{_includedir}/glusterfs/gfchangelog/*.h
+%{_libdir}/libgfchangelog.so
+%{_libdir}/pkgconfig/libgfchangelog.pc
+
+%files -n libgfrpc-devel
+%defattr(-,root,root)
+%{_includedir}/glusterfs/rpc
+%{_includedir}/glusterfs/rpc/*.h
+%{_libdir}/libgfrpc.so
+
+%files -n libgfxdr-devel
+%defattr(-,root,root)
+%{_libdir}/libgfxdr.so
 
 %changelog
+* Mon Jul 6 2020 kkeithle at redhat.com
+- GlusterFS 8.0 GA
 * Tue May 19 2020 spamecha at redhat.com
 - GlusterFS 7.6 GA
 * Thu Apr 16 2020 spamecha at redhat.com
