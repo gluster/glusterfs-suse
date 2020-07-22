@@ -29,6 +29,7 @@ Url:            http://gluster.org/
 #Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/7/%version/%name-%version.tar.gz
 Patch0001:      0001-api-libgfapi-symbol-versions-break-LTO-in-Fedora-raw.patch 
+Patch0002:      0002-rpc-rpc-lib-src-Makefile.am.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -148,6 +149,7 @@ links.
 %prep
 %setup -q -n %{name}-%{version}
 %patch0001 -p1
+%patch0002 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
