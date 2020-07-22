@@ -269,7 +269,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/%name/
 %_sbindir/gluster*
 %_sbindir/gf_attach
-%_sbindir/glfsheal
+%_libexecdir/%name/glfsheal
 %_sbindir/rcglusterd
 %_sbindir/gcron.py
 %_sbindir/gfind_missing_files
@@ -326,7 +326,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 - GlusterFS 7.5 GA
 * Wed Mar 18 2020 spamecha at redhat.com
 - GlusterFS 7.4 GA
-* Mon Jan 17 2020 sacharya at redhat.com
+* Fri Jan 17 2020 sacharya at redhat.com
 - GlusterFS 7.3 GA
 * Thu Jan 16 2020 spamecha at redhat.com
 - GlusterFS 7.2 GA
