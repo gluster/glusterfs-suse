@@ -264,7 +264,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/%name/
 %_sbindir/gluster*
 %_sbindir/gf_attach
-%_sbindir/glfsheal
+%_libexecdir/%name/glfsheal
 %_sbindir/rcglusterd
 %_sbindir/gcron.py
 %_sbindir/gfind_missing_files
