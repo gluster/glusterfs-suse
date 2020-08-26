@@ -26,9 +26,7 @@ Group:          System/Filesystems
 Url:            http://gluster.org/
 
 #Git-Clone:	git://github.com/gluster/glusterfs
-#Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/4.0/%version/%name-%version.tar.gz
-Patch0001:      0001-api-libgfapi-symbol-versions-break-LTO-in-Fedora-raw.patch
 Patch0002:      0002-rpc-rpc-lib-src-Makefile.am.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
@@ -66,6 +64,7 @@ BuildRequires:  systemd
 Requires:       python3
 Requires:       python3-requests
 Requires:	libglusterfs0 = %{version}
+Requires:	libglusterd0 = %{version}
 Requires:	libgfapi0 = %{version}
 Requires:	libgfchangelog0 = %{version}
 Requires:	libgfrpc0 = %{version}
@@ -195,7 +194,6 @@ petabytes.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0001 -p1
 %patch0002 -p1
 
 %build
@@ -301,6 +299,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %postun -n libgfxdr0 -p /sbin/ldconfig
 %post   -n libglusterfs0 -p /sbin/ldconfig
 %postun -n libglusterfs0 -p /sbin/ldconfig
+%post   -n libglusterd0 -p /sbin/ldconfig
+%postun -n libglusterd0 -p /sbin/ldconfig
 
 %files
 %defattr(-,root,root)
@@ -366,8 +366,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 
 %files -n libglusterd0
 %defattr(-,root,root)
-%{_libdir}/libglusterd.so.*
-%exclude %{_libdir}/libglusterd.so
+%{_libdir}/libglusterd.so.0*
 
 %files -n libglusterfs-devel
 %defattr(-,root,root)
@@ -375,6 +374,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_includedir/%name/*.h
 %_includedir/%name/server/*.h
 %{_libdir}/libglusterfs.so
+%exclude %{_libdir}/libglusterd.so
 %exclude %{_includedir}/glusterfs/api/*.h
 %exclude %{_includedir}/glusterfs/gfchangelog/*.h
 %exclude %{_includedir}/glusterfs/rpc/*.h
