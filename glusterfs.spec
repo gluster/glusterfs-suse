@@ -18,7 +18,7 @@
 
 Name:           glusterfs
 # %%global prereltag rc1
-Version:        8.0%{?prereltag}
+Version:        8.1%{?prereltag}
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -26,7 +26,6 @@ Group:          System/Filesystems
 Url:            http://gluster.org/
 
 #Git-Clone:	git://github.com/gluster/glusterfs
-#Git-Clone:	git://github.com/fvzwieten/lsgvt
 Source:         http://download.gluster.org/pub/gluster/glusterfs/8/%version/%name-%version.tar.gz
 Patch0001:      0001-rpc-rpc-lib-src-Makefile.am.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -65,6 +64,7 @@ BuildRequires:  systemd
 Requires:       python3
 Requires:	python3-requests
 Requires:	libglusterfs0 = %{version}
+Requires:	libglusterd0 = %{version}
 Requires:	libgfapi0 = %{version}
 Requires:	libgfchangelog0 = %{version}
 Requires:	libgfrpc0 = %{version}
@@ -122,6 +122,14 @@ Summary:        GlusterFS's core library
 Group:          System/Libraries
 
 %description -n libglusterfs0
+GlusterFS is a clustered file-system capable of scaling to several
+petabytes.
+
+%package -n libglusterd0
+Summary:        GlusterFS's glusterd library
+Group:          System/Libraries
+
+%description -n libglusterd0
 GlusterFS is a clustered file-system capable of scaling to several
 petabytes.
 
@@ -247,6 +255,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %postun -n libgfxdr0 -p /sbin/ldconfig
 %post   -n libglusterfs0 -p /sbin/ldconfig
 %postun -n libglusterfs0 -p /sbin/ldconfig
+%post   -n libglusterd0 -p /sbin/ldconfig
+%postun -n libglusterd0 -p /sbin/ldconfig
 
 %files
 %defattr(-,root,root)
@@ -285,6 +295,10 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_initddir/glusterd*
 %endif
 %_prefix/lib/ocf
+#exclude ganesha related files
+%exclude %{_sysconfdir}/ganesha/ganesha-ha.conf.sample
+%exclude %{_libexecdir}/ganesha/*
+%exclude %{_prefix}/lib/ocf/resource.d/heartbeat/*
 
 %files -n libgfapi0
 %defattr(-,root,root)
@@ -306,6 +320,10 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %defattr(-,root,root)
 %_libdir/libglusterfs.so.0*
 
+%files -n libglusterd0
+%defattr(-,root,root)
+%_libdir/libglusterd.so.0*
+
 %files devel
 %defattr(-,root,root)
 %_includedir/%name
@@ -313,6 +331,10 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_libdir/pkgconfig/*.pc
 
 %changelog
+* Wed Aug 26 2020 kkeithle at redhat.com
+- GlusterFS 8.1 GA, again
+* Wed Aug 26 2020 spamecha at redhat.com
+- GlusterFS 8.1 GA
 * Mon Jul 13 2020 spamecha at redhat.com
 - GlusterFS 8.0 GA
 * Tue May 19 2020 spamecha at redhat.com
