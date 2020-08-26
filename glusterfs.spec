@@ -120,7 +120,7 @@ petabytes.
 
 %package -n libgfapi-devel
 Summary:        GlusterFS API library
-Group:          System/Libraries
+Group:          Development/Libraries/C and C++
 
 %description -n libgfapi-devel
 GlusterFS is a clustered file-system capable of scaling to several
@@ -143,7 +143,7 @@ directive).
 
 %package -n libgfchangelog-devel
 Summary:        GlusterFS changelog library
-Group:          System/Libraries
+Group:          Development/Libraries/C and C++
 
 %description -n libgfchangelog-devel
 GlusterFS is a clustered file-system capable of scaling to several
@@ -177,7 +177,7 @@ petabytes.
 
 %package -n libgfxdr-devel
 Summary:        GlusterFS rpc library
-Group:          System/Libraries
+Group:          Development/Libraries/C and C++
 
 %description -n libgfxdr-devel
 GlusterFS is a clustered file-system capable of scaling to several
