@@ -1,0 +1,9 @@
+--- glusterfs-coreutils-0.3.1/bootstrap.sh.orig	2020-09-25 13:19:30.594166271 -0400
++++ glusterfs-coreutils-0.3.1/bootstrap.sh	2020-09-25 15:13:30.647163777 -0400
+@@ -6,6 +6,5 @@
+         gnulib-tool --import human
+ else
+         echo "Unable to find Gnulib headers. Preparing Gnulib submodule . . ."
+-        git submodule update --init
+         ./gnulib/gnulib-tool --import human
+ fi
