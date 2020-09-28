@@ -1,0 +1,25 @@
+--- glusterfs-7.7/configure.ac.orig	2020-09-28 11:00:16.602667481 -0400
++++ glusterfs-7.7/configure.ac	2020-09-28 11:30:33.797706632 -0400
+@@ -1376,15 +1376,14 @@
+   [AC_CHECK_HEADERS([urcu-bp.h],
+      [URCU_LIBS='-lurcu-bp'],
+      AC_MSG_ERROR([liburcu-bp not found]))])
+-PKG_CHECK_MODULES([URCU_CDS], [liburcu-cds >= 0.8], [],
+-  [PKG_CHECK_MODULES([URCU_CDS], [liburcu-cds >= 0.7],
++
++PKG_CHECK_MODULES([URCU_CDS], [liburcu-cds >= 0.9], [],
+     [AC_DEFINE(URCU_OLD, 1, [Define if liburcu 0.6 or 0.7 is found])
+-     USE_CONTRIB_URCU='yes'],
+-    [AC_CHECK_HEADERS([urcu/cds.h],
+-      [AC_DEFINE(URCU_OLD, 1, [Define if liburcu 0.6 or 0.7 is found])
+-       URCU_CDS_LIBS='-lurcu-cds'
+-       USE_CONTRIB_URCU='yes'],
+-      [AC_MSG_ERROR([liburcu-cds not found])])])])
++     AC_DEFINE(URCU_RCULIST_EXTRA_H, 1, [Define if liburcu 0.8 is found])
++     USE_CONTRIB_URCU='yes'])
++
++AC_SUBST(URCU_OLD)
++AC_SUBST(URCU_RCULIST_EXTRA_H)
+ 
+ BUILD_UNITTEST="no"
+ AC_ARG_ENABLE([cmocka],
