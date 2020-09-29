@@ -28,6 +28,8 @@ Url:            http://gluster.org/
 #Git-Clone:	git://github.com/gluster/glusterfs
 Source:         http://download.gluster.org/pub/gluster/glusterfs/4.0/%version/%name-%version.tar.gz
 Patch0001:      0001-rpc-rpc-lib-src-Makefile.am.patch
+Patch0002:      0002-configure.ac.patch
+Patch0003:      0003-xlators-features-bit-rot-src-bitd-bit-rot-scrub.c.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -46,7 +48,6 @@ BuildRequires:  libattr-devel
 BuildRequires:  libacl-devel
 BuildRequires:  rdma-core-devel
 BuildRequires:  libtirpc-devel
-BuildRequires:  rpcgen
 %if 0%{?sles_version} == 11
 BuildRequires:  fuse-devel >= 2.6.5
 BuildRequires:  libuuid-devel
@@ -195,6 +196,8 @@ petabytes.
 %prep
 %setup -q -n %{name}-%{version}
 %patch0001 -p1
+%patch0002 -p1
+%patch0003 -p1
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
