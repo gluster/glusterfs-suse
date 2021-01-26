@@ -47,12 +47,12 @@ BuildRequires:  rdma-core-devel
 BuildRequires:  libtirpc-devel
 BuildRequires:  rpcgen
 %if 0%{?sles_version} == 11
-BuildRequires:  fuse-devel >= 2.6.5
+BuildRequires:  fuse3-devel >= 2.6.5
 BuildRequires:  libuuid-devel
 BuildRequires:  libxml2-devel
 BuildRequires:  openssl-devel
 %else
-BuildRequires:  pkgconfig(fuse) >= 2.6.5
+BuildRequires:  pkgconfig(fuse3) >= 2.6.5
 BuildRequires:  pkgconfig(libcrypto)
 BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(uuid)
