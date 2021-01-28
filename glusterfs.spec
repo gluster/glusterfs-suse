@@ -51,6 +51,7 @@ BuildRequires:  fuse3-devel >= 2.6.5
 BuildRequires:  libuuid-devel
 BuildRequires:  libxml2-devel
 BuildRequires:  openssl-devel
+BuildRequires:  liburing-devel
 %else
 BuildRequires:  pkgconfig(fuse3) >= 2.6.5
 BuildRequires:  pkgconfig(libcrypto)
