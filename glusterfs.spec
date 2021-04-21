@@ -404,7 +404,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %{_libdir}/libgfxdr.so
 
 %changelog
-* Thu Feb 25 2020 spamecha at redhat.com
+* Thu Feb 25 2021 spamecha at redhat.com
 - GlusterFS 8.4 GA
 * Fri Dec 4 2020 spamecha at redhat.com
 - GlusterFS 8.3 GA
