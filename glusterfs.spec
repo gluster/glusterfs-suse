@@ -18,7 +18,7 @@
 
 Name:           glusterfs
 # %%global prereltag rc1
-Version:        9.4%{?prereltag}
+Version:        10.0%{?prereltag}
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -46,6 +46,7 @@ BuildRequires:  libacl-devel
 BuildRequires:  rdma-core-devel
 BuildRequires:  libtirpc-devel
 BuildRequires:  rpcgen
+BuildRequires:  gperftools-devel
 %if 0%{?sles_version} == 11
 BuildRequires:  fuse-devel >= 2.6.5
 BuildRequires:  libuuid-devel
@@ -196,7 +197,7 @@ petabytes.
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
-%configure --disable-static --disable-gnfs
+%configure --disable-static --disable-gnfs --disable-linux-io_uring
 # This section is not parallel safe or so due to bison/lex
 make V=1 %{?_smp_mflags};
 
@@ -402,8 +403,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %{_libdir}/libgfxdr.so
 
 %changelog
-* Tue Oct 12 2021 sacharya at redhat.com
-- GlusterFS 9.4 GA
+- GlusterFS 10.0 GA
 * Mon Jul 5 2021 sacharya at redhat.com
 - GlusterFS 9.3 GA
 * Mon May 10 2021 sacharya at redhat.com
