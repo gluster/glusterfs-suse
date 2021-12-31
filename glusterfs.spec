@@ -59,7 +59,7 @@ BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(uuid)
 %endif
 %if 0%{?suse_version} >= 1210
-BuildRequires:  systemd
+BuildRequires:  systemd-mini
 %endif
 Requires:       python3
 Requires:       python3-requests
@@ -403,7 +403,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %{_libdir}/libgfxdr.so
 
 %changelog
-* tue Nov 9 2021 sacharya at redhat.com
+* Tue Nov 9 2021 sacharya at redhat.com
 - GlusterFS 10.0 GA
 * Mon Jul 5 2021 sacharya at redhat.com
 - GlusterFS 9.3 GA
