@@ -37,6 +37,7 @@ BuildRequires:  libaio-devel
 BuildRequires:  libtool
 BuildRequires:  pkgconfig
 BuildRequires:  python3-devel
+BuildRequires:  python-rpm-macros
 BuildRequires:  readline-devel
 BuildRequires:  liburcu-devel >= 0.7
 BuildRequires:  sqlite3-devel
@@ -58,7 +59,7 @@ BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(uuid)
 %endif
 %if 0%{?suse_version} >= 1210
-BuildRequires:  systemd
+BuildRequires:  systemd-mini
 %endif
 Requires:       python3
 Requires:       python3-requests
@@ -196,7 +197,7 @@ petabytes.
 
 %build
 [ ! -e gf-error-codes.h ] && ./autogen.sh
-%configure --disable-static --disable-gnfs
+%configure --disable-static --disable-gnfs --disable-linux-io_uring
 # This section is not parallel safe or so due to bison/lex
 make V=1 %{?_smp_mflags};
 
