@@ -18,7 +18,7 @@
 
 Name:           glusterfs
 # %%global prereltag rc1
-Version:        10.0%{?prereltag}
+Version:        10.1%{?prereltag}
 Release:        100
 Summary:        Aggregating distributed file system
 License:        GPL-2.0 or LGPL-3.0+
@@ -58,6 +58,7 @@ BuildRequires:  pkgconfig(fuse3) >= 2.6.5
 BuildRequires:  pkgconfig(libcrypto)
 BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(uuid)
+BuildRequires:  liburing-devel
 %endif
 %if 0%{?suse_version} >= 1210
 BuildRequires:  systemd
@@ -404,6 +405,8 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %{_libdir}/libgfxdr.so
 
 %changelog
+* Wed Jan 19 2022 kkeithle at redhat.com
+- GlusterFS 10.1 GA
 * Tue Nov 9 2021 sacharya at redhat.com
 - GlusterFS 10.0 GA
 * Tue Oct 12 2021 sacharya at redhat.com
