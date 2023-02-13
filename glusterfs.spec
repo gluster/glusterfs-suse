@@ -65,7 +65,6 @@ BuildRequires:  systemd-mini
 Requires:       python3
 Requires:       python3-requests
 Requires:	libglusterfs0 = %{version}
-Requires:	libglusterd0 = %{version}
 Requires:	libgfapi0 = %{version}
 Requires:	libgfchangelog0 = %{version}
 Requires:	libgfrpc0 = %{version}
@@ -99,7 +98,6 @@ Requires:       libgfapi0 = %version
 Requires:       libgfchangelog0 = %version
 Requires:       libgfrpc0 = %version
 Requires:       libgfxdr0 = %version
-Requires:       libglusterd0 = %version
 Requires:       libuuid-devel
 Requires:       libacl-devel
 
@@ -181,15 +179,6 @@ Summary:        GlusterFS rpc library
 Group:          Development/Libraries/C and C++
 
 %description -n libgfxdr-devel
-GlusterFS is a clustered file-system capable of scaling to several
-petabytes.
-
-%package -n libglusterd0
-Summary:        GlusterFS's External Data Representation library
-Group:          System/Libraries
-Requires:       libglusterfs0 = %version
-
-%description -n libglusterd0
 GlusterFS is a clustered file-system capable of scaling to several
 petabytes.
 
@@ -299,8 +288,6 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %postun -n libgfxdr0 -p /sbin/ldconfig
 %post   -n libglusterfs0 -p /sbin/ldconfig
 %postun -n libglusterfs0 -p /sbin/ldconfig
-%post   -n libglusterd0 -p /sbin/ldconfig
-%postun -n libglusterd0 -p /sbin/ldconfig
 
 %files
 %defattr(-,root,root)
@@ -330,6 +317,7 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %_localstatedir/lib/glusterd
 %_localstatedir/log/%name
 %python3_sitelib/gluster*
+/etc/bash_completion.d/gluster.bash
 %if 0%{?_unitdir:1}
 %_unitdir/glusterd.service
 %_unitdir/glustereventsd.service
@@ -364,17 +352,12 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %defattr(-,root,root)
 %_libdir/libgfxdr.so.0*
 
-%files -n libglusterd0
-%defattr(-,root,root)
-%{_libdir}/libglusterd.so.0*
-
 %files -n libglusterfs-devel
 %defattr(-,root,root)
 %_includedir/%name
 %_includedir/%name/*.h
 %_includedir/%name/server/*.h
 %{_libdir}/libglusterfs.so
-%exclude %{_libdir}/libglusterd.so
 %exclude %{_includedir}/glusterfs/api/*.h
 %exclude %{_includedir}/glusterfs/gfchangelog/*.h
 %exclude %{_includedir}/glusterfs/rpc/*.h
