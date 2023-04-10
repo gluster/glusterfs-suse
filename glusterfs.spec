@@ -405,6 +405,14 @@ chmod u-s "$b/%_bindir/fusermount-glusterfs"
 %changelog
 * Thu Apr 10 2023 sacharya at redhat.com
 - glusterFS 10.4
+* Wed Sep 21 2022 sacharya at redhat.com
+- GlusterFS 10.3 GA
+* Mon May 16 2022 sacharya at redhat.com
+- GlusterFS 10.2 GA
+* Wed Jan 19 2022 kkeithle at redhat.com
+- GlusterFS 10.1 GA
+* Tue Nov 9 2021 sacharya at redhat.com
+- GlusterFS 10.0 GA
 * Tue Oct 12 2021 sacharya at redhat.com
 - GlusterFS 9.4 GA
 * Mon Jul 5 2021 sacharya at redhat.com
