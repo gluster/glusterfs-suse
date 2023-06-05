@@ -37,6 +37,7 @@ BuildRequires:  libaio-devel
 BuildRequires:  libtool
 BuildRequires:  pkgconfig
 BuildRequires:  python3-devel
+BuildRequires:  python-rpm-macros
 BuildRequires:  readline-devel
 BuildRequires:  liburcu-devel >= 0.7
 BuildRequires:  sqlite3-devel
@@ -46,6 +47,7 @@ BuildRequires:  libacl-devel
 BuildRequires:  rdma-core-devel
 BuildRequires:  libtirpc-devel
 BuildRequires:  rpcgen
+BuildRequires:  gperftools-devel
 %if 0%{?sles_version} == 11
 BuildRequires:  fuse3-devel >= 2.6.5
 BuildRequires:  libuuid-devel
